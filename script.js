@@ -538,7 +538,7 @@ function goToClosingPage() {
         clearTimeout(idleTextTimeout); // tránh bị ghi đè chữ nếu bấm trước khi hết 2.5s
         envelope.classList.add("open");
         closingText.textContent = "Bấm vào lá thư để đọc...💌";
-        closingLetterContent.textContent = "Gửi Piii 💌";
+        closingLetterContent.textContent = "Gửi Piii";
       });
 
       closingLetterEl.addEventListener("click", () => {
@@ -592,7 +592,7 @@ function showEnvelope() {
       <div class="letter-window">
         <div class="letter">
           <div class="letter-content">
-            Gửi Piii 💌
+            Gửi Piii
           </div>
         </div>
       </div>
