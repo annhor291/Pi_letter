@@ -2,7 +2,7 @@ const keys = document.querySelectorAll(".key");
 const dots = document.querySelectorAll(".password-dots span");
 const deleteButton = document.getElementById("deleteButton");
 const errorMessage = document.getElementById("errorMessage");
-const correctPassword = "270603";
+const correctPassword = "290103";
 
 const tipBox = document.getElementById("tipBox");
 const tipDismiss = document.getElementById("tipDismiss");
