@@ -146,6 +146,7 @@ const photoSources = [
   "assets/crush4.jpg",
   "assets/crush5.jpg",
   "assets/crush6.jpg",
+  "assets/crush7.jpg",
 ];
 
 function startPhotoRain(container, sources) {
