@@ -1110,3 +1110,27 @@ body {
     max-width: none;
   }
 }
+
+/* ========= MẶT SAU DẤU NIÊM PHONG — gắn liền vào nắp, tự xoay theo nắp ========= */
+.seal-back {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px; /* to hơn, trước: 34px */
+  height: 44px;
+  border-radius: 50%;
+  background: #b93a72;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: -1; /* chìm ra sau phần svg tô màu của chính nắp nó thuộc về */
+}
+
+/* gắn ở mũi nhọn của nắp ĐỘNG (mũi nắp nằm ở đáy khi đóng) */
+.seal-back--flap {
+  bottom: -20px;
+}
+
+/* gắn ở mũi nhọn của nắp TĨNH (mũi nắp nằm ở đỉnh khi mở) */
+.seal-back--static {
+  top: -20px;
+}

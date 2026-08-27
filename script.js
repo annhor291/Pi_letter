@@ -133,7 +133,17 @@ const letterPages = [
   Chữ dùng cho hiệu ứng rơi ở nền, màu neon hồng.
   Muốn đổi nội dung thì sửa mảng này.
 */
-const rainWords = ["❤", "♥", "Piii", "luv", "💗", "Xinh Yêu", "✨", "Y Phựn"];
+const rainWords = [
+  "❤",
+  "♥",
+  "Piii",
+  "luv",
+  "💗",
+  "xinh yêu",
+  "✨",
+  "y phựn",
+  "ntkp",
+];
 
 /*
   Ảnh dùng cho hiệu ứng rơi sau khi đọc hết thư.
@@ -455,29 +465,33 @@ function goToClosingPage() {
 
   closingContainer.innerHTML = `
     <div class="envelope open" id="closingEnvelope">
-      <div class="envelope-flap">
-  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
-    <polygon points="0,0 364,0 182,126" fill="#f47ab0" />
+
+    <div class="envelope-flap">
+  <svg viewBox="0 0 464 126" preserveAspectRatio="none">
+    <polygon points="0,0 464,0 464,26 232,126 0,26" fill="#f47ab0" />
     <path
-      d="M 0,0 L 182,126 L 364,0"
+      d="M 0,0 L 0,26 L 232,126 L 464,26 L 464,0"
       fill="none"
       stroke="#2b2b2b"
       stroke-width="2"
       stroke-linejoin="miter"
     />
   </svg>
+  <div class="seal-back seal-back--flap"></div>
 </div>
+
 <div class="envelope-flap-static">
-  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
-    <polygon points="0,126 364,126 182,0" fill="#f47ab0" />
+  <svg viewBox="0 0 464 126" preserveAspectRatio="none">
+    <polygon points="0,126 464,126 464,100 232,0 0,100" fill="#f47ab0" />
     <path
-      d="M 0,126 L 182,0 L 364,126"
+      d="M 0,126 L 0,100 L 232,0 L 464,100 L 464,126"
       fill="none"
       stroke="#2b2b2b"
       stroke-width="2"
       stroke-linejoin="miter"
     />
   </svg>
+  <div class="seal-back seal-back--static"></div>
 </div>
 
       <div class="letter-window">
@@ -489,6 +503,7 @@ function goToClosingPage() {
       <div class="envelope-pocket"></div>
 
       <div class="heart-seal no-action" id="closingHeart">♥</div>
+      <div class="heart-seal-back"></div>
     </div>
 
     <p class="envelope-text" id="closingText">Đang cất thư vào phong bì...💌</p>
@@ -563,31 +578,34 @@ function showEnvelope() {
 
   envelopeContainer.innerHTML = `
     <div class="envelope">
+
       <div class="envelope-flap">
-  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
-    <polygon points="0,0 364,0 182,126" fill="#f47ab0" />
+  <svg viewBox="0 0 464 126" preserveAspectRatio="none">
+    <polygon points="0,0 464,0 464,26 232,126 0,26" fill="#f47ab0" />
     <path
-      d="M 0,0 L 182,126 L 364,0"
+      d="M 0,0 L 0,26 L 232,126 L 464,26 L 464,0"
       fill="none"
       stroke="#2b2b2b"
       stroke-width="2"
       stroke-linejoin="miter"
     />
   </svg>
-</div>
-<div class="envelope-flap-static">
-  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
-    <polygon points="0,126 364,126 182,0" fill="#f47ab0" />
-    <path
-      d="M 0,126 L 182,0 L 364,126"
-      fill="none"
-      stroke="#2b2b2b"
-      stroke-width="2"
-      stroke-linejoin="miter"
-    />
-  </svg>
+  <div class="seal-back seal-back--flap"></div>
 </div>
 
+<div class="envelope-flap-static">
+  <svg viewBox="0 0 464 126" preserveAspectRatio="none">
+    <polygon points="0,126 464,126 464,100 232,0 0,100" fill="#f47ab0" />
+    <path
+      d="M 0,126 L 0,100 L 232,0 L 464,100 L 464,126"
+      fill="none"
+      stroke="#2b2b2b"
+      stroke-width="2"
+      stroke-linejoin="miter"
+    />
+  </svg>
+  <div class="seal-back seal-back--static"></div>
+</div>
 
       <div class="letter-window">
         <div class="letter">
@@ -600,6 +618,7 @@ function showEnvelope() {
       <div class="envelope-pocket"></div>
 
       <div class="heart-seal">♥</div>
+      <div class="heart-seal-back"></div>
     </div>
 
     <p class="envelope-text">
