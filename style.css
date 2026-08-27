@@ -1,0 +1,1105 @@
+/* =========================================
+   RESET
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   BODY
+   ========================================= */
+
+body {
+  font-family: Arial, sans-serif;
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 255, 255, 0.8),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #ffe8f2, #ffd1e4);
+
+  overflow: hidden;
+}
+
+/* =========================================
+   TRANG NHẬP MẬT KHẨU
+   ========================================= */
+
+.password-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+}
+
+/* =========================================
+   CARD
+   ========================================= */
+
+.password-card {
+  width: min(900px, 95vw);
+
+  min-height: 520px;
+
+  display: flex;
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  background: #ed5d9c;
+
+  box-shadow: 0 25px 60px rgba(180, 70, 120, 0.25);
+
+  animation: cardAppear 1s ease;
+}
+
+/* =========================================
+   ẢNH
+   ========================================= */
+
+.photo-section {
+  width: 50%;
+  padding: 45px;
+  display: flex;
+  flex-direction: column; /* trước: chỉ có align/justify center, giờ xếp dọc */
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.photo-section img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 25px;
+  border: 4px solid #000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ========= BỘ PHÁT NHẠC ========= */
+.music-player {
+  width: 100%;
+  padding: 14px 18px 10px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.player-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.progress-range {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35); /* trước: rgba(255,255,255,0.4) */
+  outline: none;
+  cursor: pointer;
+}
+
+.progress-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #000; /* trước: #fff */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.progress-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: #000; /* trước: #fff */
+  cursor: pointer;
+}
+
+.progress-range::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35); /* trước: rgba(255,255,255,0.4) */
+}
+
+.progress-heart {
+  color: #000; /* trước: #fff */
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.player-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+
+.player-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.6); /* trước: rgba(255,255,255,0.7) */
+  color: #000;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.player-btn:hover {
+  background: rgba(0, 0, 0, 0.08); /* trước: rgba(255,255,255,0.15) */
+}
+
+.player-btn:active {
+  transform: scale(0.9);
+}
+
+.play-btn {
+  width: 52px;
+  height: 52px;
+  border-width: 2px;
+}
+
+/* icon tam giác (lúc chưa phát) */
+.play-icon {
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 13px solid #000; /* trước: #fff */
+  margin-left: 3px;
+}
+
+/* icon 2 vạch (lúc đang phát) */
+.pause-icon {
+  display: none;
+  position: relative;
+  width: 12px;
+  height: 16px;
+}
+
+.pause-icon::before,
+.pause-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 16px;
+  background: #000; /* trước: #fff */
+  border-radius: 1px;
+}
+
+.pause-icon::before {
+  left: 0;
+}
+
+.pause-icon::after {
+  right: 0;
+}
+
+.play-btn.playing .play-icon {
+  display: none;
+}
+
+.play-btn.playing .pause-icon {
+  display: block;
+}
+
+/* ========= NÚT TUA — vẽ bằng CSS, 2 tam giác nhỏ ghép lại ========= */
+.rewind-icon,
+.forward-icon {
+  display: flex;
+  align-items: center;
+}
+
+.rewind-icon span,
+.forward-icon span {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.rewind-icon span {
+  border-right: 8px solid #000;
+  margin-right: -2px;
+}
+
+.forward-icon span {
+  border-left: 8px solid #000;
+  margin-left: -2px;
+}
+
+/* =========================================
+   PASSWORD SECTION
+   ========================================= */
+
+.password-section {
+  width: 50%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 30px;
+}
+
+/* =========================================
+   HEART
+   ========================================= */
+
+.heart-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 15px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.2);
+
+  color: white;
+
+  font-size: 18px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================
+   TITLE
+   ========================================= */
+
+.password-section h1 {
+  margin-bottom: 25px;
+
+  color: white;
+
+  font-size: 22px;
+
+  font-weight: 600;
+}
+
+/* =========================================
+   PASSWORD DOTS
+   ========================================= */
+
+.password-dots {
+  display: flex;
+
+  gap: 12px;
+
+  margin-bottom: 30px;
+}
+
+.password-dots span {
+  width: 15px;
+  height: 15px;
+
+  border-radius: 50%;
+
+  border: 2px solid white;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+/*
+   Khi đã nhập số,
+   JavaScript sẽ thêm class "filled"
+*/
+
+.password-dots span.filled {
+  background: white;
+
+  transform: scale(1.05);
+}
+
+/* =========================================
+   KEYPAD
+   ========================================= */
+
+.keypad {
+  width: 270px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+/* =========================================
+   NÚT SỐ
+   ========================================= */
+
+.key {
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.key:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.key:active {
+  transform: scale(0.9);
+
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =========================================
+   NÚT XÓA
+   ========================================= */
+
+.delete-button {
+  width: 70px;
+  height: 70px;
+
+  border: none;
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 26px;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+}
+
+.delete-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* =========================================
+   ERROR
+   ========================================= */
+
+.error-message {
+  margin-top: 15px;
+
+  color: white;
+
+  font-size: 13px;
+
+  opacity: 0;
+
+  transition: opacity 0.3s ease;
+}
+
+.error-message.show {
+  opacity: 1;
+}
+
+/* =========================================
+   ANIMATION CARD
+   ========================================= */
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+
+    transform: translateY(30px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
+  .password-card {
+    width: 100%;
+
+    min-height: auto;
+
+    flex-direction: column;
+  }
+
+  .photo-section {
+    width: 100%;
+
+    padding: 20px 20px 10px;
+  }
+
+  .photo-section img {
+    height: 200px;
+  }
+
+  .music-player {
+    padding: 10px 14px 8px;
+  }
+
+  .play-btn {
+    width: 46px;
+    height: 46px;
+  }
+
+  .player-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .password-section {
+    width: 100%;
+
+    padding: 25px 20px 30px;
+  }
+
+  .keypad {
+    width: 240px;
+  }
+
+  .key {
+    width: 60px;
+    height: 60px;
+  }
+
+  .delete-button {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* =========================================
+   ẨN MÀN HÌNH PASSWORD
+   ========================================= */
+
+.password-card.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+/* =========================================
+   ENVELOPE CONTAINER
+   ========================================= */
+
+.envelope-container {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at center, #fff4fa, #ffdce9);
+
+  opacity: 0;
+  pointer-events: none;
+
+  overflow: hidden; /* để chữ rơi không tràn ra ngoài màn hình */
+
+  transition: opacity 0.8s ease;
+}
+
+.envelope-container.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* =========================================
+   HIỆU ỨNG CHỮ RƠI NỀN (neon hồng)
+   ========================================= */
+
+.rain-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(115vh) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-120vh) rotate(-15deg);
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   PHONG BÌ — TĂNG KÍCH THƯỚC
+   ========================================= */
+
+.envelope {
+  position: relative;
+  z-index: 1; /* nằm trên lớp chữ rơi */
+  width: 360px;
+  height: 230px;
+  background: #ed5d9c;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(190, 70, 120, 0.25);
+  perspective: 1000px;
+  overflow: visible;
+}
+
+/* =========================================
+   NẮP ĐỘNG — chỉ để tạo hiệu ứng lật lúc mở
+   ========================================= */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 126px;
+  background: #f47ab0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transform-origin: top center;
+  transition:
+    transform 0.6s ease,
+    z-index 0s ease 0.3s,
+    opacity 0s ease 0.6s;
+  z-index: 4;
+}
+
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+  opacity: 0;
+}
+
+/* =========================================
+   NẮP TĨNH — to hơn khung + đè xuống thân phong bì
+   vài px để không bao giờ hở góc, dù trình duyệt
+   có làm tròn pixel lệch đi chăng nữa
+   ========================================= */
+.envelope-flap-static {
+  position: absolute;
+  top: -122px; /* thay vì -126px -> đè xuống thân 2px */
+  left: -3px;
+  width: calc(100% + 6px); /* rộng hơn mỗi bên 3px */
+  height: 128px; /* cao hơn 2px để phần đè xuống vẫn đúng tỉ lệ tam giác */
+  background: #f47ab0;
+  clip-path: polygon(0 100%, 100% 100%, 50% 0);
+  opacity: 0;
+  transition: opacity 0s ease 0.6s;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.envelope.open .envelope-flap-static {
+  opacity: 1;
+}
+
+/* =========================================
+   KHUNG "KHE" — giấu/lộ lá thư
+   ========================================= */
+.letter-window {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: -80px;
+  height: 310px;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.letter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 180px;
+  background: #fffdf8;
+  border: 2px solid #2b2b2b; /* viền đen mỏng cho lá thư nổi bật hơn */
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+  transform: translateY(330px);
+  transition:
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s,
+    box-shadow 0.4s ease 0.8s;
+  pointer-events: auto;
+}
+
+.envelope.open .letter {
+  transform: translateY(50px);
+  cursor: pointer;
+  /* đổ bóng rõ hơn khi đã trồi ra khỏi phong bì */
+  box-shadow: 0 14px 32px rgba(190, 40, 110, 0.35);
+}
+
+.letter-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #c2185b; /* hồng đậm hơn, trước là #555 */
+  font-family: "Itim", cursive; /* đồng bộ font viết tay, trước là Georgia */
+  font-size: 26px; /* to hơn, trước là 22px */
+  font-weight: 600;
+  padding: 0 20px;
+  text-align: center;
+}
+
+/* =========================================
+   TÚI MẶT TRƯỚC PHONG BÌ
+   ========================================= */
+.envelope-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 145px;
+  background: #e15390;
+  clip-path: polygon(0 20%, 50% 0, 100% 20%, 100% 100%, 0 100%);
+  border-radius: 0 0 10px 10px;
+  z-index: 3;
+}
+
+/* =========================================
+   TIM Ở GIỮA
+   ========================================= */
+.heart-seal {
+  position: absolute;
+  top: 94px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #e94d92;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 5;
+  transition:
+    transform 0.2s ease,
+    opacity 0.3s ease;
+}
+
+.heart-seal:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.envelope.open .heart-seal {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* =========================================
+   CHỮ DƯỚI PHONG BÌ
+   ========================================= */
+.envelope-text {
+  position: relative;
+  z-index: 1;
+  margin-top: 28px;
+  color: #d94b89;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: opacity 0.3s ease;
+}
+
+/* =========================================
+   TRANG ĐỌC THƯ (chồng thư)
+   ========================================= */
+.reading-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #fff4fa, #ffdce9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  z-index: 100;
+}
+
+.reading-page.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stack-progress {
+  margin-bottom: 14px;
+  color: #d94b89;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.letter-stack {
+  position: relative;
+  width: min(380px, 85vw);
+  height: 480px;
+}
+
+.stack-card {
+  position: absolute;
+  inset: 0;
+  background: #fffdf8;
+  border: 2px solid #2b2b2b; /* viền đen kiểu giấy note */
+  border-radius: 12px; /* bo góc ít lại cho giống note thật */
+  box-shadow: 0 15px 35px rgba(180, 70, 120, 0.25);
+  padding: 35px 30px;
+  font-family: "Itim", cursive; /* font viết tay, hỗ trợ tiếng Việt */
+  color: #444;
+  font-size: 20px; /* Itim hơi nhỏ hơn Georgia ở cùng size, tăng nhẹ lên */
+  line-height: 1.8;
+  white-space: pre-line;
+  cursor: pointer;
+  transition:
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.5s ease;
+}
+
+.stack-hint {
+  margin-top: 50px; /* tăng nhẹ để vẫn cách đều chồng thư khi chữ to hơn */
+  color: #d94b89;
+  font-size: 16px; /* tăng từ 13px lên 16px */
+  font-weight: 600; /* thêm chút đậm cho rõ hơn khi to lên */
+  opacity: 0.75;
+}
+
+/* ========= CÁC LỚP THƯ PHÍA SAU — lệch góc + xoay để trông như 1 chồng giấy thật ========= */
+.stack-card.behind-1 {
+  transform: translate(14px, 10px) rotate(-4deg);
+  pointer-events: none;
+}
+
+.stack-card.behind-2 {
+  transform: translate(-16px, 18px) rotate(5deg);
+  pointer-events: none;
+}
+
+/* ========= HIỆU ỨNG TRƯỢT KHI CHUYỂN TRANG — xen kẽ trái/phải ========= */
+.stack-card.leaving-left {
+  transform: translateX(-160px) rotate(-14deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stack-card.leaving-right {
+  transform: translateX(160px) rotate(14deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stack-progress,
+.letter-stack,
+.stack-hint {
+  position: relative;
+  z-index: 1; /* nổi lên trên lớp chữ/tim rơi nền */
+}
+
+/* ========= CHỮ NỔI TỪ DƯỚI LÊN (trang phong bì) ========= */
+.falling-text {
+  position: absolute;
+  bottom: -40px; /* xuất phát từ dưới thay vì top */
+  color: #ff2fa0;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow:
+    0 0 6px #ff2fa0,
+    0 0 14px #ff5cb8,
+    0 0 24px #ff8fd1;
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* ========= TRÁI TIM RƠI TỪ TRÊN XUỐNG (trang đọc thư) ========= */
+.falling-heart {
+  position: absolute;
+  top: -30px;
+  color: #ff4f9a;
+  pointer-events: none;
+  text-shadow: 0 2px 8px rgba(233, 77, 146, 0.45);
+  animation-name: fallDown;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* ========= NÚT ĐÓNG THƯ (hiện sau khi đọc hết) ========= */
+.end-actions {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.end-actions.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.close-letter-btn {
+  padding: 14px 34px;
+  border: none;
+  border-radius: 999px;
+  background: #e94d92;
+  color: #fff;
+  font-family: "Itim", cursive;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(190, 40, 110, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.close-letter-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+/* ========= ẢNH RƠI (thay cho tim, sau khi đọc xong) ========= */
+.falling-photo {
+  position: absolute;
+  top: -120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 4px solid #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  animation-name: fallDown;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* trái tim ở trang đóng thư không cho bấm/hover nữa */
+.heart-seal.no-action {
+  cursor: default;
+  pointer-events: none; /* thêm dòng này: khoá tim trong lúc đang đóng thư */
+}
+.heart-seal.no-action:hover {
+  transform: translateX(-50%);
+}
+
+/* =========================================
+   TRANG ĐÓNG THƯ — hiệu ứng ngược lại lúc mở
+   ========================================= */
+
+/* Giai đoạn 1: thư rút xuống, nắp vẫn giữ nguyên trạng thái đang mở */
+.envelope.closing-letter .envelope-flap {
+  transform: rotateX(180deg);
+  opacity: 0;
+  z-index: 1;
+}
+
+.envelope.closing-letter .envelope-flap-static {
+  opacity: 1;
+}
+
+.envelope.closing-letter .letter {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(330px);
+}
+
+.envelope.closing-letter .heart-seal {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Giai đoạn 2: nắp gập xuống che lại */
+.envelope.closing-flap .envelope-flap {
+  transition:
+    transform 0.6s ease,
+    opacity 0s ease 0s;
+  transform: rotateX(0deg);
+  opacity: 1;
+  z-index: 4;
+}
+
+.envelope.closing-flap .envelope-flap-static {
+  transition: opacity 0s ease 0s;
+  opacity: 0;
+}
+
+.envelope.closing-flap .letter {
+  transform: translateY(330px);
+}
+
+.envelope.closing-flap .heart-seal {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ========= KHUNG TIP (sticky note) ========= */
+.tip-box {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  max-width: 300px;
+  background: #fffdf8;
+  border: 2px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 18px 20px 46px;
+  font-family: "Itim", cursive;
+  color: #333;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: rotate(-2deg) translateY(-20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.tip-box.show {
+  opacity: 1;
+  transform: rotate(-2deg) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.tip-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e94d92;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.tip-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.tip-list li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.tip-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #e94d92;
+}
+
+.tip-warning {
+  color: #d21e6b;
+  font-weight: 700;
+}
+
+.tip-dismiss {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  border: none;
+  background: #ff6fb3;
+  color: #fff;
+  font-family: "Itim", cursive;
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(233, 77, 146, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.tip-dismiss:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 700px) {
+  .tip-box {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}

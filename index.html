@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Kim Phượng 💗</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Itim&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <audio id="bgMusic" loop preload="auto" src="assets/music1.mp3"></audio>
+
+    <main class="password-page">
+      <div class="tip-box" id="tipBox">
+        <div class="tip-title">TIP</div>
+
+        <ul class="tip-list">
+          <li>Click vào nút play ở dưới ảnh để phát nhạc.</li>
+          <li>Mật khẩu là mã PIN mà An đã cung cấp.</li>
+          <li>Bấm đúng mật khẩu để đăng nhập.</li>
+          <li class="tip-warning">
+            ĐẶC BIỆT LƯU Ý: Cẩn thận coi chừng có người sau lưng đọc lén
+            :)))))))))
+          </li>
+        </ul>
+
+        <button class="tip-dismiss" id="tipDismiss">Bỏ qua</button>
+      </div>
+      
+      <div class="password-card">
+        <!-- =========================
+                 ẢNH BÊN TRÁI
+                 ========================= -->
+
+        <div class="photo-section">
+          <img src="assets/crush.jpg" alt="Một kỷ niệm" />
+
+          <div class="music-player">
+            <audio id="bgMusic" src="assets/music.mp3" loop></audio>
+
+            <div class="player-progress">
+              <input
+                type="range"
+                id="progressBar"
+                class="progress-range"
+                min="0"
+                max="100"
+                value="0"
+              />
+              <span class="progress-heart">♥</span>
+            </div>
+
+            <div class="player-controls">
+              <button
+                class="player-btn"
+                id="rewindBtn"
+                aria-label="Tua lại 10 giây"
+              >
+                <span class="rewind-icon">
+                  <span></span>
+                  <span></span>
+                </span>
+              </button>
+
+              <button
+                class="player-btn play-btn"
+                id="playPauseBtn"
+                aria-label="Phát / Tạm dừng"
+              >
+                <span class="play-icon"></span>
+                <span class="pause-icon"></span>
+              </button>
+
+              <button
+                class="player-btn"
+                id="forwardBtn"
+                aria-label="Tua tới 10 giây"
+              >
+                <span class="forward-icon">
+                  <span></span>
+                  <span></span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =========================
+                 KHU VỰC NHẬP MẬT KHẨU
+                 ========================= -->
+
+        <div class="password-section">
+          <!-- Icon trái tim -->
+
+          <div class="heart-icon">♥</div>
+
+          <!-- Tiêu đề -->
+
+          <h1>Nhập mật khẩu</h1>
+
+          <!-- 6 dấu chấm -->
+
+          <div class="password-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <!-- Bàn phím -->
+
+          <div class="keypad">
+            <button class="key" data-number="1">1</button>
+            <button class="key" data-number="2">2</button>
+            <button class="key" data-number="3">3</button>
+
+            <button class="key" data-number="4">4</button>
+            <button class="key" data-number="5">5</button>
+            <button class="key" data-number="6">6</button>
+
+            <button class="key" data-number="7">7</button>
+            <button class="key" data-number="8">8</button>
+            <button class="key" data-number="9">9</button>
+
+            <div></div>
+
+            <button class="key" data-number="0">0</button>
+
+            <button class="delete-button" id="deleteButton"><</button>
+          </div>
+
+          <!-- Thông báo lỗi -->
+
+          <p id="errorMessage" class="error-message">Mật khẩu không đúng 💔</p>
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
