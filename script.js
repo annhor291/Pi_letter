@@ -491,7 +491,7 @@ function goToClosingPage() {
       <div class="heart-seal no-action" id="closingHeart">♥</div>
     </div>
 
-    <p class="envelope-text" id="closingText">Đang cất thư vào phong bì...</p>
+    <p class="envelope-text" id="closingText">Đang cất thư vào phong bì...💌</p>
   `;
 
   document.body.appendChild(closingContainer);
@@ -531,7 +531,7 @@ function goToClosingPage() {
       closingHeart.classList.remove("no-action");
 
       const idleTextTimeout = setTimeout(() => {
-        closingText.textContent = "Bấm vào trái tim để mở thư";
+        closingText.textContent = "Bấm vào trái tim để mở thư 💌";
       }, 1500);
 
       closingHeart.addEventListener("click", () => {
@@ -621,7 +621,7 @@ function showEnvelope() {
   const heartSeal = envelopeContainer.querySelector(".heart-seal");
   heartSeal.addEventListener("click", () => {
     envelope.classList.add("open");
-    envelopeText.textContent = "Bấm vào lá thư để đọc...";
+    envelopeText.textContent = "Bấm vào lá thư để đọc...💌";
   });
 
   const letterEl = envelopeContainer.querySelector(".letter");
