@@ -133,7 +133,7 @@ const letterPages = [
   Chữ dùng cho hiệu ứng rơi ở nền, màu neon hồng.
   Muốn đổi nội dung thì sửa mảng này.
 */
-const rainWords = ["❤", "♥", "yêu em", "love", "💗", "forever", "✨"];
+const rainWords = ["❤", "♥", "Piii", "luv", "💗", "Xinh Yêu", "✨", "Y Phựn"];
 
 /*
   Ảnh dùng cho hiệu ứng rơi sau khi đọc hết thư.
@@ -204,6 +204,79 @@ function typeText(el, text, speed = 28, onComplete) {
   return id;
 }
 
+function startHeartRain(container) {
+  const rain = document.createElement("div");
+  rain.className = "rain-container";
+  container.prepend(rain);
+
+  const intervalId = setInterval(() => {
+    const el = document.createElement("span");
+    el.className = "falling-heart";
+    el.textContent = "❤";
+    el.style.left = Math.random() * 100 + "%";
+    el.style.fontSize = 16 + Math.random() * 14 + "px";
+
+    const duration = 5 + Math.random() * 4;
+    el.style.animationDuration = duration + "s";
+
+    rain.appendChild(el);
+    setTimeout(() => el.remove(), duration * 1000 + 200);
+  }, 300);
+
+  return intervalId;
+}
+
+function startMixedRain(container, sources) {
+  const rain = document.createElement("div");
+  rain.className = "rain-container";
+  container.prepend(rain);
+
+  const totalLanes = 10;
+  let laneIndex = 0;
+
+  function spawn(kind) {
+    let el;
+
+    if (kind === "photo") {
+      el = document.createElement("img");
+      el.className = "falling-photo";
+      el.src = sources[Math.floor(Math.random() * sources.length)];
+      const size = 70 + Math.random() * 50;
+      el.style.width = size + "px";
+      el.style.height = size * 1.2 + "px";
+    } else {
+      el = document.createElement("span");
+      el.className = "falling-heart";
+      el.textContent = "❤";
+      el.style.fontSize = 16 + Math.random() * 14 + "px";
+    }
+
+    const lane = laneIndex % totalLanes;
+    laneIndex++;
+    const jitter = Math.random() * (100 / totalLanes) * 0.6;
+    el.style.left = lane * (100 / totalLanes) + jitter + "%";
+
+    const duration = 6 + Math.random() * 5;
+    el.style.animationDuration = duration + "s";
+
+    rain.appendChild(el);
+    setTimeout(() => el.remove(), duration * 1000 + 200);
+  }
+
+  // giữ nguyên mật độ ảnh hiện tại (tương đương tỉ lệ bạn đang ưng ý)
+  const photoIntervalId = setInterval(() => spawn("photo"), 400);
+
+  // tim dày hơn hẳn — muốn dày/thưa hơn nữa thì chỉnh số này (nhỏ hơn = dày hơn)
+  const heartIntervalId = setInterval(() => spawn("heart"), 200);
+
+  return [photoIntervalId, heartIntervalId];
+}
+
+function clearRain(ids) {
+  if (!ids) return;
+  ids.forEach((id) => clearInterval(id));
+}
+
 function startBackgroundRain(container) {
   const rain = document.createElement("div");
   rain.className = "rain-container";
@@ -234,28 +307,6 @@ function startBackgroundRain(container) {
   return intervalId;
 }
 
-function startHeartRain(container) {
-  const rain = document.createElement("div");
-  rain.className = "rain-container";
-  container.prepend(rain);
-
-  const intervalId = setInterval(() => {
-    const el = document.createElement("span");
-    el.className = "falling-heart";
-    el.textContent = "❤";
-    el.style.left = Math.random() * 100 + "%";
-    el.style.fontSize = 16 + Math.random() * 14 + "px";
-
-    const duration = 5 + Math.random() * 4;
-    el.style.animationDuration = duration + "s";
-
-    rain.appendChild(el);
-    setTimeout(() => el.remove(), duration * 1000 + 200);
-  }, 300);
-
-  return intervalId;
-}
-
 function goToReadingPage() {
   const readingPage = document.createElement("div");
   readingPage.className = "reading-page";
@@ -275,7 +326,7 @@ function goToReadingPage() {
     readingPage.classList.add("show");
   });
 
-  let rainInterval = startHeartRain(readingPage);
+  let rainInterval = startMixedRain(readingPage, photoSources);
 
   const stack = readingPage.querySelector("#letterStack");
   const progress = readingPage.querySelector("#stackProgress");
@@ -331,18 +382,15 @@ function goToReadingPage() {
       if (offset === 1) el.classList.add("behind-1");
       if (offset === 2) el.classList.add("behind-2");
 
-      if (offset === 0) {
-        if (!typedIndices.has(idx)) {
-          typedIndices.add(idx);
-          if (el._typeInterval) clearInterval(el._typeInterval);
-          el.dataset.typingDone = "false";
-          typeText(el, letterPages[idx], 28, () => {
-            el.dataset.typingDone = "true";
-          });
-        }
-      } else if (!typedIndices.has(idx)) {
-        el.textContent = letterPages[idx];
-        el.dataset.typingDone = "true";
+      // Lá phía sau (offset 1, 2) giữ trang trắng hoàn toàn,
+      // chỉ gõ chữ đúng lúc lá đó trở thành lá đang đọc (offset 0)
+      if (offset === 0 && !typedIndices.has(idx)) {
+        typedIndices.add(idx);
+        if (el._typeInterval) clearInterval(el._typeInterval);
+        el.dataset.typingDone = "false";
+        typeText(el, letterPages[idx], 28, () => {
+          el.dataset.typingDone = "true";
+        });
       }
     });
 
@@ -383,17 +431,13 @@ function goToReadingPage() {
     progress.remove();
     hint.remove();
 
-    clearInterval(rainInterval);
-    readingPage.querySelector(".rain-container")?.remove();
-    rainInterval = startPhotoRain(readingPage, photoSources);
-
     requestAnimationFrame(() => {
       endActions.classList.add("show");
     });
   }
 
   closeBtn.addEventListener("click", () => {
-    clearInterval(rainInterval);
+    clearRain(rainInterval);
     readingPage.classList.remove("show");
 
     setTimeout(() => {
@@ -411,8 +455,30 @@ function goToClosingPage() {
 
   closingContainer.innerHTML = `
     <div class="envelope open" id="closingEnvelope">
-      <div class="envelope-flap"></div>
-      <div class="envelope-flap-static"></div>
+      <div class="envelope-flap">
+  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
+    <polygon points="0,0 364,0 182,126" fill="#f47ab0" />
+    <path
+      d="M 0,0 L 182,126 L 364,0"
+      fill="none"
+      stroke="#2b2b2b"
+      stroke-width="2"
+      stroke-linejoin="miter"
+    />
+  </svg>
+</div>
+<div class="envelope-flap-static">
+  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
+    <polygon points="0,126 364,126 182,0" fill="#f47ab0" />
+    <path
+      d="M 0,126 L 182,0 L 364,126"
+      fill="none"
+      stroke="#2b2b2b"
+      stroke-width="2"
+      stroke-linejoin="miter"
+    />
+  </svg>
+</div>
 
       <div class="letter-window">
         <div class="letter">
@@ -464,9 +530,14 @@ function goToClosingPage() {
 
       closingHeart.classList.remove("no-action");
 
+      const idleTextTimeout = setTimeout(() => {
+        closingText.textContent = "Bấm vào trái tim để mở thư";
+      }, 1500);
+
       closingHeart.addEventListener("click", () => {
+        clearTimeout(idleTextTimeout); // tránh bị ghi đè chữ nếu bấm trước khi hết 2.5s
         envelope.classList.add("open");
-        closingText.textContent = "Bấm vào lá thư để đọc...";
+        closingText.textContent = "Bấm vào lá thư để đọc...💌";
         closingLetterContent.textContent = "Gửi Piii 💌";
       });
 
@@ -485,14 +556,38 @@ function goToClosingPage() {
     700 + 650 + 650,
   );
 }
+
 function showEnvelope() {
   const envelopeContainer = document.createElement("div");
   envelopeContainer.className = "envelope-container";
 
   envelopeContainer.innerHTML = `
     <div class="envelope">
-      <div class="envelope-flap"></div>
-      <div class="envelope-flap-static"></div>
+      <div class="envelope-flap">
+  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
+    <polygon points="0,0 364,0 182,126" fill="#f47ab0" />
+    <path
+      d="M 0,0 L 182,126 L 364,0"
+      fill="none"
+      stroke="#2b2b2b"
+      stroke-width="2"
+      stroke-linejoin="miter"
+    />
+  </svg>
+</div>
+<div class="envelope-flap-static">
+  <svg viewBox="0 0 364 126" preserveAspectRatio="none">
+    <polygon points="0,126 364,126 182,0" fill="#f47ab0" />
+    <path
+      d="M 0,126 L 182,0 L 364,126"
+      fill="none"
+      stroke="#2b2b2b"
+      stroke-width="2"
+      stroke-linejoin="miter"
+    />
+  </svg>
+</div>
+
 
       <div class="letter-window">
         <div class="letter">
@@ -508,7 +603,7 @@ function showEnvelope() {
     </div>
 
     <p class="envelope-text">
-      Gửi em...
+      Bấm vào trái tim để mở thư 💌
     </p>
   `;
 
