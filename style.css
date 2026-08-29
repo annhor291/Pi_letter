@@ -50,20 +50,14 @@ body {
 
 .password-card {
   width: min(900px, 95vw);
-
   min-height: 520px;
-
   display: flex;
-
-  overflow: hidden;
-
+  overflow: visible; /* đổi từ hidden -> visible */
   border-radius: 30px;
-
   background: #ed5d9c;
-
   box-shadow: 0 25px 60px rgba(180, 70, 120, 0.25);
-
   animation: cardAppear 1s ease;
+  border: 4px solid #000; /* thêm */
 }
 
 /* =========================================
@@ -95,6 +89,8 @@ body {
   padding: 14px 18px 10px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.12);
+  border: 4px solid #000; /* thêm */
+  position: relative;
 }
 
 .player-progress {
@@ -110,7 +106,7 @@ body {
   appearance: none;
   height: 3px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.35); /* trước: rgba(255,255,255,0.4) */
+  background: rgba(0, 0, 0, 0.35);
   outline: none;
   cursor: pointer;
 }
@@ -148,6 +144,7 @@ body {
 }
 
 .player-controls {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,7 +156,7 @@ body {
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.6); /* trước: rgba(255,255,255,0.7) */
+  border: 3px solid rgba(0, 0, 0, 0.6); /* trước: rgba(255,255,255,0.7) */
   color: #000;
   border-radius: 50%;
   width: 38px;
@@ -182,7 +179,7 @@ body {
 .play-btn {
   width: 52px;
   height: 52px;
-  border-width: 2px;
+  border-width: 3px;
 }
 
 /* icon tam giác (lúc chưa phát) */
@@ -399,31 +396,6 @@ body {
 }
 
 /* =========================================
-   NÚT XÓA
-   ========================================= */
-
-.delete-button {
-  width: 70px;
-  height: 70px;
-
-  border: none;
-
-  background: transparent;
-
-  color: white;
-
-  font-size: 26px;
-
-  cursor: pointer;
-
-  border-radius: 50%;
-}
-
-.delete-button:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* =========================================
    ERROR
    ========================================= */
 
@@ -536,19 +508,14 @@ body {
 .envelope-container {
   position: fixed;
   inset: 0;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   background: radial-gradient(circle at center, #fff4fa, #ffdce9);
-
   opacity: 0;
   pointer-events: none;
-
   overflow: hidden; /* để chữ rơi không tràn ra ngoài màn hình */
-
   transition: opacity 0.8s ease;
 }
 
@@ -788,6 +755,7 @@ body {
   font-size: 22px;
   font-weight: 600;
   letter-spacing: 1px;
+  font-family: "Itim", cursive;
   transition: opacity 0.3s ease;
 }
 
@@ -847,10 +815,11 @@ body {
 
 .stack-hint {
   margin-top: 50px; /* tăng nhẹ để vẫn cách đều chồng thư khi chữ to hơn */
-  color: #d94b89;
+  color: #c2185b; /* #d94b89;*/
   font-size: 16px; /* tăng từ 13px lên 16px */
   font-weight: 600; /* thêm chút đậm cho rõ hơn khi to lên */
   opacity: 0.75;
+  font-family: "Itim", cursive;
 }
 
 /* ========= CÁC LỚP THƯ PHÍA SAU — lệch góc + xoay để trông như 1 chồng giấy thật ========= */
@@ -931,8 +900,8 @@ body {
 }
 
 .close-letter-btn {
-  padding: 14px 34px;
-  border: none;
+  padding: 10px 26px;
+  border: 3px solid #2b2b2b;
   border-radius: 999px;
   background: #e94d92;
   color: #fff;
@@ -942,9 +911,11 @@ body {
   cursor: pointer;
   box-shadow: 0 10px 24px rgba(190, 40, 110, 0.35);
   transition: transform 0.2s ease;
+  animation: btnBounce 1.8s ease-in-out infinite; /* thêm dòng này */
 }
 
 .close-letter-btn:hover {
+  animation-play-state: paused; /* dừng nảy khi rê chuột vào, dễ bấm hơn */
   transform: translateY(-2px) scale(1.03);
 }
 
@@ -1027,7 +998,7 @@ body {
   right: 30px;
   max-width: 300px;
   background: #fffdf8;
-  border: 2px solid #2b2b2b;
+  border: 3px solid #2b2b2b;
   border-radius: 12px;
   padding: 18px 20px 46px;
   font-family: "Itim", cursive;
@@ -1133,4 +1104,457 @@ body {
 /* gắn ở mũi nhọn của nắp TĨNH (mũi nắp nằm ở đỉnh khi mở) */
 .seal-back--static {
   top: -20px;
+}
+
+/* ========= FACT (góc dưới trái, giống hệt style TIP) ========= */
+.fact-box {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  max-width: 300px;
+  background: #fffdf8;
+  border: 3px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 18px 20px 46px;
+  font-family: "Itim", cursive;
+  color: #333;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: rotate(2deg) translateY(20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.fact-box.show {
+  opacity: 1;
+  transform: rotate(2deg) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.fact-text {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+@media (max-width: 700px) {
+  .notes-top-right {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    align-items: stretch;
+  }
+
+  .tip-box,
+  .reminder-box {
+    max-width: none;
+  }
+
+  .fact-box {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+}
+
+/* ========= NÚT XÓA ========= */
+.delete-button {
+  width: 70px;
+  height: 70px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-icon {
+  position: relative;
+  width: 40px; /* trước: 48px -> nhỏ lại */
+  height: 25px; /* trước: 30px -> nhỏ lại */
+  display: block;
+  filter: drop-shadow(
+    0 3px 5px rgba(0, 0, 0, 0.3)
+  ); /* đổ bóng, bám đúng theo hình bo góc */
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+}
+
+.delete-key-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.delete-cross {
+  position: absolute;
+  top: 50%;
+  left: 58%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+}
+
+.delete-cross::before,
+.delete-cross::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 1.5px;
+  background: #555;
+  border-radius: 2px;
+}
+
+.delete-cross::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.delete-cross::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.delete-button:hover .delete-icon {
+  transform: scale(1.08);
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.35));
+}
+
+.delete-button:active .delete-icon {
+  transform: scale(0.92);
+}
+
+/* Hiệu ứng khi rê chuột */
+.delete-button:hover .delete-icon {
+  transform: scale(1.08);
+
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+/* Hiệu ứng khi bấm */
+.delete-button:active .delete-icon {
+  transform: scale(0.92);
+}
+
+/* ========= REMINDER — góc trên bên trái ========= */
+.reminder-box {
+  position: fixed;
+  top: 30px;
+  left: 65px;
+  max-width: 260px;
+  background: #fffdf8;
+  border: 3px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 18px 20px 46px;
+  font-family: "Itim", cursive;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: rotate(-2deg) translateY(-20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.reminder-box.show {
+  opacity: 1;
+  transform: rotate(-2deg) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.reminder-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e94d92;
+  margin-bottom: 4px;
+}
+
+.reminder-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.reminder-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+/* icon X đơn giản, dùng chung cho mọi nút đóng nhỏ khác nếu cần sau này */
+.close-x {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.close-x::before,
+.close-x::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 2px;
+  background: #999;
+  border-radius: 2px;
+}
+
+.close-x::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-x::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* ========= MEMORY — góc dưới bên phải, kèm ảnh ========= */
+.memory-box {
+  position: fixed;
+  bottom: 20px;
+  right: 60px;
+  max-width: 260px;
+  background: #fffdf8;
+  border: 3px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 16px 18px 46px;
+  font-family: "Itim", cursive;
+  color: #333;
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: rotate(2deg) translateY(20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.memory-box.show {
+  opacity: 1;
+  transform: rotate(3deg) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.memory-photo-wrap {
+  display: inline-block;
+  margin: 10px 0 8px;
+  border: 5px solid #333; /* viền hồng đỏ */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.memory-photo {
+  display: block;
+  width: 180px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.memory-caption {
+  font-size: 15px;
+  font-weight: 600;
+  color: #c2185b;
+}
+
+.music-player {
+  width: 100%;
+  padding: 14px 18px 10px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 4px solid #000;
+  position: relative; /* để .song-dropdown-btn và .song-list định vị theo đây */
+}
+
+/* ========= NÚT MŨI TÊN — góc dưới-phải thẻ nhạc, thẳng cột với trái tim ========= */
+.song-dropdown-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px; /* khớp đúng padding-right (18px) -> thẳng hàng với trái tim ở progress bar */
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #000;
+  transition: transform 0.3s ease;
+}
+
+.song-dropdown-btn.open .dropdown-arrow {
+  transform: rotate(180deg); /* mũi tên quay lên khi đang mở */
+}
+
+/* ========= BẢNG DANH SÁCH BÀI HÁT — trượt xuống, đè lên thẻ ảnh bên ngoài ========= */
+.song-list {
+  position: absolute;
+  top: calc(
+    100% + 4px
+  ); /* bắt đầu đúng ngay mép ngoài viền dưới, không chồng */
+  left: 16px; /* bù đúng 4px border của music-player -> khớp viền ngoài */
+  right: 16px;
+  max-height: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 0 0 14px 14px; /* chỉ bo 2 góc dưới */
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20; /* đè lên .photo-section bên ngoài */
+  display: flex; /* để chứa list bài + thanh cuộn nằm cạnh nhau */
+}
+
+.song-list.show {
+  max-height: 190px; /* đủ cho đúng 3 dòng */
+  border: 3px solid #000;
+  border-top: none; /* nối liền, không tách rời khỏi thẻ nhạc */
+}
+
+.song-item {
+  padding: 12px 16px;
+  font-family: "Itim", cursive;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.song-item:last-child {
+  border-bottom: none;
+}
+
+.song-item:hover {
+  background: #ffe9f2;
+}
+
+.song-item.active {
+  background: #ffc7e0;
+  font-weight: 700;
+  color: #c2185b;
+}
+
+.song-items {
+  flex: 1;
+  overflow: hidden;
+}
+
+.song-scrollbar {
+  width: 14px;
+  padding: 6px 4px;
+  background: rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.song-scrollbar-thumb {
+  width: 6px;
+  border-radius: 999px;
+  background: #999;
+  cursor: grab;
+  transition: background 0.15s ease;
+}
+
+.song-scrollbar-thumb:hover,
+.song-scrollbar-thumb.dragging {
+  background: #c2185b;
+}
+
+/* ========= Bao thư lắc lư ========= */
+@keyframes envelopeWobble {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.envelope:not(.open) {
+  animation: envelopeWobble 2.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.envelope.open {
+  animation: none;
+  transform: none;
+}
+
+/* ========= Nút thoát ra ========= */
+.exit-btn {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 10px 26px;
+  border: 3px solid #2b2b2b;
+  border-radius: 999px;
+  background: #e94d92;
+  color: #fff;
+  font-family: "Itim", cursive;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(190, 40, 110, 0.35);
+  transition: transform 0.2s ease;
+  animation: btnBounceCentered 1.8s ease-in-out infinite; /* thêm dòng này */
+}
+
+.exit-btn:hover {
+  animation-play-state: paused;
+  transform: translateX(-50%) translateY(-2px) scale(1.03);
+}
+
+@keyframes btnBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes btnBounceCentered {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-6px);
+  }
+}
+
+/* ========= Sticker ========= */
+.floating-sticker {
+  position: absolute;
+  bottom: -50px;
+  pointer-events: none;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.15));
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }

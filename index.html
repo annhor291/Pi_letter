@@ -17,14 +17,13 @@
   </head>
 
   <body>
-    <audio id="bgMusic" loop preload="auto" src="assets/music1.mp3"></audio>
-
     <main class="password-page">
       <div class="tip-box" id="tipBox">
         <div class="tip-title">TIP</div>
 
         <ul class="tip-list">
           <li>Click vào nút play ở dưới ảnh để phát nhạc.</li>
+          <li>Click vào nút tam giác để chọn nhạc nhạc.</li>
           <li>Mật khẩu là mã PIN mà An đã cung cấp.</li>
           <li>Bấm đúng mật khẩu để đăng nhập.</li>
           <li class="tip-warning">
@@ -35,7 +34,35 @@
 
         <button class="tip-dismiss" id="tipDismiss">Bỏ qua</button>
       </div>
-      
+      <div class="fact-box" id="factBox">
+        <div class="tip-title">FACT</div>
+        <p class="fact-text">
+          Do ngành IT đã làm An khô khan, hướng nội như bây giờ nên An không
+          biết phải nói những điều này trực tiếp với Phượng thế nào, vậy nên An
+          làm cái web này để chuyển lời giúp An.
+        </p>
+        <button class="tip-dismiss" id="factDismiss">Bỏ qua</button>
+      </div>
+
+      <div class="reminder-box" id="reminderBox">
+        <div class="reminder-title">REMINDER</div>
+        <p class="reminder-text">
+          Nếu Pi có quên bấm phát nhạc thì cũng đừng lo vì An đã tích hợp tự
+          động phát nhạc khi mở thư luôn rồi. Còn nếu Pi có cho dừng nhạc thì
+          nút trái tim cũng sẽ phát tiếp he he, phải có nhạc mới hay chớ.
+        </p>
+        <button class="tip-dismiss" id="reminderClose">Bỏ qua</button>
+      </div>
+
+      <div class="memory-box" id="memoryBox">
+        <div class="tip-title">MEMORY</div>
+        <div class="memory-photo-wrap">
+          <img src="assets/nho&pi1.jpg" alt="Kỷ niệm" class="memory-photo" />
+        </div>
+        <p class="memory-caption">Lần đầu bị sét đánh mà không ngỏm ⚡️⚡️🥲</p>
+        <button class="tip-dismiss" id="memoryDismiss">bít ròi</button>
+      </div>
+
       <div class="password-card">
         <!-- =========================
                  ẢNH BÊN TRÁI
@@ -45,7 +72,7 @@
           <img src="assets/crush.jpg" alt="Một kỷ niệm" />
 
           <div class="music-player">
-            <audio id="bgMusic" src="assets/music.mp3" loop></audio>
+            <audio id="bgMusic" src="assets/music1.mp3"></audio>
 
             <div class="player-progress">
               <input
@@ -90,6 +117,19 @@
                   <span></span>
                 </span>
               </button>
+            </div>
+            <button
+              class="song-dropdown-btn"
+              id="songDropdownBtn"
+              aria-label="Chọn bài hát"
+            >
+              <span class="dropdown-arrow"></span>
+            </button>
+            <div class="song-list" id="songList">
+              <div class="song-items" id="songItems"></div>
+              <div class="song-scrollbar" id="songScrollbar">
+                <div class="song-scrollbar-thumb" id="songScrollbarThumb"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -137,12 +177,24 @@
 
             <button class="key" data-number="0">0</button>
 
-            <button class="delete-button" id="deleteButton"><</button>
+            <button class="delete-button" id="deleteButton" aria-label="Xóa">
+              <span class="delete-icon">
+                <svg viewBox="0 0 100 60" class="delete-key-svg">
+                  <path
+                    d="M 26,0 L 92,0 Q 100,0 100,8 L 100,52 Q 100,60 92,60 L 26,60 Q 18,60 13.89,53.14 L 3.08,35.14 Q 0,30 3.08,24.86 L 13.89,6.86 Q 18,0 26,0 Z"
+                    fill="rgba(255, 255, 255, 0.75)"
+                  />
+                </svg>
+                <span class="delete-cross"></span>
+              </span>
+            </button>
           </div>
 
           <!-- Thông báo lỗi -->
 
-          <p id="errorMessage" class="error-message">Mật khẩu không đúng 💔</p>
+          <p id="errorMessage" class="error-message">
+            Mật khẩu không đúng ròi 💔
+          </p>
         </div>
       </div>
     </main>

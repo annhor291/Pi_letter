@@ -15,32 +15,101 @@ tipDismiss.addEventListener("click", () => {
   tipBox.classList.remove("show");
 });
 
+const factBox = document.getElementById("factBox");
+const factDismiss = document.getElementById("factDismiss");
+
+setTimeout(() => {
+  factBox.classList.add("show");
+}, 1100);
+
+factDismiss.addEventListener("click", () => {
+  factBox.classList.remove("show");
+});
+
+const reminderBox = document.getElementById("reminderBox");
+const reminderClose = document.getElementById("reminderClose");
+
+setTimeout(() => {
+  reminderBox.classList.add("show");
+}, 850);
+
+reminderClose.addEventListener("click", () => {
+  reminderBox.classList.remove("show");
+});
+
+const memoryBox = document.getElementById("memoryBox");
+const memoryDismiss = document.getElementById("memoryDismiss");
+
+setTimeout(() => {
+  memoryBox.classList.add("show");
+}, 1350);
+
+memoryDismiss.addEventListener("click", () => {
+  memoryBox.classList.remove("show");
+});
+
 const bgMusic = document.getElementById("bgMusic");
+
+bgMusic.addEventListener("play", () => {
+  playPauseBtn.classList.add("playing");
+});
+
+bgMusic.addEventListener("pause", () => {
+  playPauseBtn.classList.remove("playing");
+});
+
 const playPauseBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
 const rewindBtn = document.getElementById("rewindBtn");
 const forwardBtn = document.getElementById("forwardBtn");
 
+let hasSelectedSong = false; // true khi người dùng đã tự chọn 1 bài trong danh sách
+
 playPauseBtn.addEventListener("click", () => {
   if (bgMusic.paused) {
-    bgMusic.play();
-    playPauseBtn.classList.add("playing");
+    if (!hasSelectedSong) {
+      bgMusic.src = songs[0].src; // chưa chọn gì -> mặc định phát bài số 1
+      hasSelectedSong = true;
+    }
+    bgMusic.play().catch((err) => {
+      console.warn("Trình duyệt chặn tự động phát nhạc:", err);
+    });
   } else {
     bgMusic.pause();
-    playPauseBtn.classList.remove("playing");
   }
 });
+function updateProgressFill() {
+  const percent = progressBar.value;
+  progressBar.style.background = `linear-gradient(to right, #000 0%, #000 ${percent}%, rgba(0,0,0,0.35) ${percent}%, rgba(0,0,0,0.35) 100%)`;
+}
 
 bgMusic.addEventListener("timeupdate", () => {
   if (bgMusic.duration) {
     progressBar.value = (bgMusic.currentTime / bgMusic.duration) * 100;
+    updateProgressFill();
   }
+});
+
+bgMusic.addEventListener("ended", () => {
+  const currentIndex = songs.findIndex((s) => bgMusic.src.endsWith(s.src));
+  const nextIndex =
+    currentIndex === -1 || currentIndex >= songs.length - 1
+      ? 0
+      : currentIndex + 1;
+
+  bgMusic.src = songs[nextIndex].src;
+  hasSelectedSong = true;
+  bgMusic.play();
+
+  // nếu danh sách đang mở, cập nhật lại để bài mới hiện đúng trạng thái "active"
+  if (songListOpen) renderSongWindow();
 });
 
 progressBar.addEventListener("input", () => {
   if (bgMusic.duration) {
     bgMusic.currentTime = (progressBar.value / 100) * bgMusic.duration;
   }
+  updateProgressFill(); // thêm dòng này để kéo tay cũng cập nhật màu ngay lập tức
 });
 
 rewindBtn.addEventListener("click", () => {
@@ -53,6 +122,159 @@ forwardBtn.addEventListener("click", () => {
     bgMusic.currentTime + 10,
   );
 });
+
+/*
+  Danh sách bài hát để chọn. Thêm/bớt bao nhiêu bài tuỳ ý,
+  cơ chế cuộn theo nhóm 2 bài sẽ tự khớp theo độ dài mảng này.
+*/
+const songs = [
+  { name: "Bài hát 1", src: "assets/music1.mp3" },
+  { name: "Bài hát 2", src: "assets/music2.mp3" },
+  { name: "Bài hát 3", src: "assets/music3.mp3" },
+  { name: "Bài hát 4", src: "assets/music4.mp3" },
+  { name: "Bài hát 5", src: "assets/music5.mp3" },
+  { name: "Bài hát 6", src: "assets/music6.mp3" },
+  { name: "Bài hát 7", src: "assets/music7.mp3" },
+];
+
+const songDropdownBtn = document.getElementById("songDropdownBtn");
+const songList = document.getElementById("songList");
+
+let songWindowStart = 0;
+let songListOpen = false;
+
+const songItemsEl = document.getElementById("songItems");
+const songScrollbar = document.getElementById("songScrollbar");
+const songScrollbarThumb = document.getElementById("songScrollbarThumb");
+const musicPlayerEl = document.querySelector(".music-player");
+
+const VISIBLE_COUNT = 3;
+
+function maxWindowStart() {
+  return Math.max(songs.length - VISIBLE_COUNT, 0);
+}
+
+function renderSongWindow() {
+  songItemsEl.innerHTML = "";
+
+  songs
+    .slice(songWindowStart, songWindowStart + VISIBLE_COUNT)
+    .forEach((song) => {
+      const item = document.createElement("div");
+      item.className = "song-item";
+      item.textContent = song.name;
+
+      if (bgMusic.src.endsWith(song.src)) item.classList.add("active");
+
+      item.addEventListener("click", () => {
+        bgMusic.src = song.src;
+        bgMusic.currentTime = 0;
+        bgMusic.play();
+        hasSelectedSong = true;
+        closeSongList();
+      });
+
+      songItemsEl.appendChild(item);
+    });
+
+  updateScrollbarThumb();
+}
+
+function updateScrollbarThumb() {
+  const max = maxWindowStart();
+  const trackHeight = songScrollbar.clientHeight;
+  const ratioVisible = Math.min(VISIBLE_COUNT / songs.length, 1);
+  const thumbHeight = Math.max(trackHeight * ratioVisible, 16);
+
+  songScrollbarThumb.style.height = thumbHeight + "px";
+
+  const progress = max > 0 ? songWindowStart / max : 0;
+  const thumbTop = (trackHeight - thumbHeight) * progress;
+  songScrollbarThumb.style.transform = `translateY(${thumbTop}px)`;
+
+  songScrollbar.style.visibility = max > 0 ? "visible" : "hidden";
+}
+
+function setWindowStartFromRatio(ratio) {
+  const max = maxWindowStart();
+  const clamped = Math.min(Math.max(ratio, 0), 1);
+  songWindowStart = Math.round(clamped * max);
+  renderSongWindow();
+}
+
+// Click trực tiếp lên track (không phải thumb) -> nhảy tới vị trí đó
+songScrollbar.addEventListener("click", (e) => {
+  if (e.target === songScrollbarThumb) return;
+  const rect = songScrollbar.getBoundingClientRect();
+  const ratio = (e.clientY - rect.top) / rect.height;
+  setWindowStartFromRatio(ratio);
+});
+
+// Kéo thumb bằng chuột
+let draggingThumb = false;
+
+songScrollbarThumb.addEventListener("mousedown", (e) => {
+  draggingThumb = true;
+  songScrollbarThumb.classList.add("dragging");
+  e.preventDefault();
+});
+
+window.addEventListener("mousemove", (e) => {
+  if (!draggingThumb) return;
+  const rect = songScrollbar.getBoundingClientRect();
+  const ratio = (e.clientY - rect.top) / rect.height;
+  setWindowStartFromRatio(ratio);
+});
+
+window.addEventListener("mouseup", () => {
+  draggingThumb = false;
+  songScrollbarThumb.classList.remove("dragging");
+});
+
+function openSongList() {
+  songListOpen = true;
+  songDropdownBtn.classList.add("open");
+  songList.classList.add("show");
+  musicPlayerEl.classList.add("list-open"); // thêm dòng này
+  renderSongWindow();
+}
+
+function closeSongList() {
+  songListOpen = false;
+  songDropdownBtn.classList.remove("open");
+  songList.classList.remove("show");
+  musicPlayerEl.classList.add("list-open"); // thêm dòng này
+}
+
+songDropdownBtn.addEventListener("click", () => {
+  if (songListOpen) {
+    closeSongList();
+  } else {
+    songWindowStart = 0;
+    openSongList();
+  }
+});
+
+// Cuộn chuột bên trong danh sách -> lùi/tiến 2 bài, giữ lại 1 bài cuối của lượt trước
+songList.addEventListener(
+  "wheel",
+  (e) => {
+    if (!songListOpen) return;
+    e.preventDefault();
+
+    if (e.deltaY > 0) {
+      songWindowStart = Math.min(
+        songWindowStart + 2,
+        Math.max(songs.length - 3, 0),
+      );
+    } else {
+      songWindowStart = Math.max(songWindowStart - 2, 0);
+    }
+
+    renderSongWindow();
+  },
+  { passive: false },
+);
 
 let password = "";
 
@@ -130,6 +352,72 @@ const letterPages = [
 ];
 
 /*
+  Sticker dùng để trộn cùng chữ nổi ở trang mở/đóng thư.
+  Điền đúng tên file bạn đã lưu vào assets/ ở đây.
+*/
+const stickerSources = [
+  "assets/sticker1.webp",
+  "assets/sticker2.webp",
+  "assets/sticker3.webp",
+  "assets/sticker4.webp",
+  "assets/sticker5.webp",
+  "assets/sticker6.webp",
+  "assets/sticker7.webp",
+  "assets/sticker8.webp",
+  "assets/sticker9.webp",
+  "assets/sticker10.webp",
+  "assets/sticker11.webp",
+  "assets/sticker12.webp",
+];
+
+function startBackgroundRain(container) {
+  const rain = document.createElement("div");
+  rain.className = "rain-container";
+  container.prepend(rain);
+
+  const totalLanes = 12;
+  let laneIndex = 0;
+
+  function spawn(kind) {
+    let el;
+
+    if (kind === "sticker") {
+      el = document.createElement("img");
+      el.className = "floating-sticker";
+      el.src =
+        stickerSources[Math.floor(Math.random() * stickerSources.length)];
+      const size = 40 + Math.random() * 30;
+      el.style.width = size + "px";
+      el.style.height = size + "px";
+    } else {
+      el = document.createElement("span");
+      el.className = "falling-text";
+      el.textContent = rainWords[Math.floor(Math.random() * rainWords.length)];
+      el.style.fontSize = 14 + Math.random() * 16 + "px";
+    }
+
+    const lane = laneIndex % totalLanes;
+    laneIndex++;
+    const jitter = Math.random() * (100 / totalLanes) * 0.6;
+    el.style.left = lane * (100 / totalLanes) + jitter + "%";
+
+    const duration = 6 + Math.random() * 5;
+    el.style.animationDuration = duration + "s";
+
+    rain.appendChild(el);
+    setTimeout(() => el.remove(), duration * 1000 + 200);
+  }
+
+  // chữ nổi — giữ nguyên mật độ như cũ
+  const textIntervalId = setInterval(() => spawn("text"), 260);
+
+  // sticker — thưa hơn chữ 1 chút để không rối mắt, chỉnh số này để dày/thưa
+  const stickerIntervalId = setInterval(() => spawn("sticker"), 500);
+
+  return [textIntervalId, stickerIntervalId];
+}
+
+/*
   Chữ dùng cho hiệu ứng rơi ở nền, màu neon hồng.
   Muốn đổi nội dung thì sửa mảng này.
 */
@@ -162,6 +450,26 @@ const photoSources = [
   "assets/crush10.jpg",
 ];
 
+function createShuffledPicker(items) {
+  let pool = [];
+
+  function reshuffle() {
+    pool = [...items];
+    // Fisher-Yates shuffle
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+  }
+
+  return function pick() {
+    if (pool.length === 0) reshuffle();
+    return pool.pop();
+  };
+}
+
+const pickPhoto = createShuffledPicker(photoSources);
+
 function startPhotoRain(container, sources) {
   const rain = document.createElement("div");
   rain.className = "rain-container";
@@ -173,7 +481,7 @@ function startPhotoRain(container, sources) {
   const intervalId = setInterval(() => {
     const img = document.createElement("img");
     img.className = "falling-photo";
-    img.src = sources[Math.floor(Math.random() * sources.length)];
+    img.src = pickPhoto(); // trước: sources[Math.floor(Math.random() * sources.length)]
 
     const lane = laneIndex % totalLanes;
     laneIndex++;
@@ -253,7 +561,7 @@ function startMixedRain(container, sources) {
     if (kind === "photo") {
       el = document.createElement("img");
       el.className = "falling-photo";
-      el.src = sources[Math.floor(Math.random() * sources.length)];
+      el.src = pickPhoto(); // trước: sources[Math.floor(Math.random() * sources.length)]
       const size = 70 + Math.random() * 50;
       el.style.width = size + "px";
       el.style.height = size * 1.2 + "px";
@@ -288,36 +596,6 @@ function startMixedRain(container, sources) {
 function clearRain(ids) {
   if (!ids) return;
   ids.forEach((id) => clearInterval(id));
-}
-
-function startBackgroundRain(container) {
-  const rain = document.createElement("div");
-  rain.className = "rain-container";
-  container.prepend(rain);
-
-  const totalLanes = 12; // chia màn hình thành các "làn" để chữ xuất hiện đều hơn
-  let laneIndex = 0;
-
-  const intervalId = setInterval(() => {
-    const el = document.createElement("span");
-    el.className = "falling-text";
-    el.textContent = rainWords[Math.floor(Math.random() * rainWords.length)];
-
-    const lane = laneIndex % totalLanes;
-    laneIndex++;
-    const jitter = Math.random() * (100 / totalLanes) * 0.6;
-    el.style.left = lane * (100 / totalLanes) + jitter + "%";
-
-    el.style.fontSize = 14 + Math.random() * 16 + "px";
-
-    const duration = 6 + Math.random() * 5;
-    el.style.animationDuration = duration + "s";
-
-    rain.appendChild(el);
-    setTimeout(() => el.remove(), duration * 1000 + 200);
-  }, 260);
-
-  return intervalId;
 }
 
 function goToReadingPage() {
@@ -510,6 +788,7 @@ function goToClosingPage() {
     </div>
 
     <p class="envelope-text" id="closingText">Đang cất thư vào phong bì...💌</p>
+    <button class="exit-btn" id="closingExitBtn">thoát raaaaaa</button>
   `;
 
   document.body.appendChild(closingContainer);
@@ -562,7 +841,7 @@ function goToClosingPage() {
       closingLetterEl.addEventListener("click", () => {
         if (!envelope.classList.contains("open")) return;
 
-        clearInterval(rainInterval);
+        clearRain(rainInterval); // trước: clearInterval(rainInterval)
         closingContainer.classList.remove("show");
 
         setTimeout(() => {
@@ -573,6 +852,10 @@ function goToClosingPage() {
     },
     700 + 650 + 650,
   );
+  const closingExitBtn = closingContainer.querySelector("#closingExitBtn");
+  closingExitBtn.addEventListener("click", () => {
+    location.reload();
+  });
 }
 
 function showEnvelope() {
@@ -627,6 +910,7 @@ function showEnvelope() {
     <p class="envelope-text">
       Bấm vào trái tim để mở thư 💌
     </p>
+    <button class="exit-btn" id="exitBtn">thoát raaaaaa</button>
   `;
 
   document.body.appendChild(envelopeContainer);
@@ -644,18 +928,30 @@ function showEnvelope() {
   heartSeal.addEventListener("click", () => {
     envelope.classList.add("open");
     envelopeText.textContent = "Bấm vào lá thư để đọc...💌";
+    // Tự động phát nhạc khi mở thư
+    if (bgMusic.paused) {
+      hasSelectedSong = true;
+      bgMusic.play().catch((err) => {
+        console.warn("Trình duyệt chặn tự động phát nhạc:", err);
+      });
+    }
   });
 
   const letterEl = envelopeContainer.querySelector(".letter");
   letterEl.addEventListener("click", () => {
     if (!envelope.classList.contains("open")) return;
 
-    clearInterval(rainInterval);
+    clearRain(rainInterval); // trước: clearInterval(rainInterval)
     envelopeContainer.classList.remove("show");
 
     setTimeout(() => {
       envelopeContainer.remove();
       goToReadingPage();
     }, 500);
+  });
+
+  const exitBtn = envelopeContainer.querySelector("#exitBtn");
+  exitBtn.addEventListener("click", () => {
+    location.reload();
   });
 }
