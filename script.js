@@ -6,52 +6,31 @@ const correctPassword = "290103";
 
 const tipBox = document.getElementById("tipBox");
 const tipDismiss = document.getElementById("tipDismiss");
-
-setTimeout(() => {
-  tipBox.classList.add("show");
-}, 600);
+setTimeout(() => showNoteAnimated(tipBox), 600);
 
 const factBox = document.getElementById("factBox");
 const factDismiss = document.getElementById("factDismiss");
-
-setTimeout(() => {
-  factBox.classList.add("show");
-}, 1100);
+setTimeout(() => showNoteAnimated(factBox), 1100);
 
 const reminderBox = document.getElementById("reminderBox");
 const reminderClose = document.getElementById("reminderClose");
-
-setTimeout(() => {
-  reminderBox.classList.add("show");
-}, 850);
+setTimeout(() => showNoteAnimated(reminderBox), 850);
 
 const memoryBox = document.getElementById("memoryBox");
 const memoryDismiss = document.getElementById("memoryDismiss");
-
-setTimeout(() => {
-  memoryBox.classList.add("show");
-}, 1350);
+setTimeout(() => showNoteAnimated(memoryBox), 1350);
 
 const trickBox = document.getElementById("trickBox");
 const trickDismiss = document.getElementById("trickDismiss");
-
-setTimeout(() => {
-  trickBox.classList.add("show");
-}, 950); // chen giữa thời điểm TIP (600ms) và REMINDER (850ms) một chút để không dồn cục
+setTimeout(() => showNoteAnimated(trickBox), 950);
 
 const promiseBox = document.getElementById("promiseBox");
 const promiseDismiss = document.getElementById("promiseDismiss");
-
-setTimeout(() => {
-  promiseBox.classList.add("show");
-}, 1600);
+setTimeout(() => showNoteAnimated(promiseBox), 1600);
 
 const wishBox = document.getElementById("wishBox");
 const wishDismiss = document.getElementById("wishDismiss");
-
-setTimeout(() => {
-  wishBox.classList.add("show");
-}, 1250);
+setTimeout(() => showNoteAnimated(wishBox), 1250);
 
 const allNotes = [
   { box: tipBox, dismissedManually: false },
@@ -65,37 +44,37 @@ const allNotes = [
 
 // Đánh dấu "đã tắt thủ công" khi bấm đúng nút Bỏ qua/bít ời của từng note
 tipDismiss.addEventListener("click", () => {
-  tipBox.classList.remove("show");
+  hideNoteAnimated(tipBox);
   allNotes.find((n) => n.box === tipBox).dismissedManually = true;
 });
 
 factDismiss.addEventListener("click", () => {
-  factBox.classList.remove("show");
+  hideNoteAnimated(factBox);
   allNotes.find((n) => n.box === factBox).dismissedManually = true;
 });
 
 reminderClose.addEventListener("click", () => {
-  reminderBox.classList.remove("show");
+  hideNoteAnimated(reminderBox);
   allNotes.find((n) => n.box === reminderBox).dismissedManually = true;
 });
 
 memoryDismiss.addEventListener("click", () => {
-  memoryBox.classList.remove("show");
+  hideNoteAnimated(memoryBox);
   allNotes.find((n) => n.box === memoryBox).dismissedManually = true;
 });
 
 trickDismiss.addEventListener("click", () => {
-  trickBox.classList.remove("show");
+  hideNoteAnimated(trickBox);
   allNotes.find((n) => n.box === trickBox).dismissedManually = true;
 });
 
 promiseDismiss.addEventListener("click", () => {
-  promiseBox.classList.remove("show");
+  hideNoteAnimated(promiseBox);
   allNotes.find((n) => n.box === promiseBox).dismissedManually = true;
 });
 
 wishDismiss.addEventListener("click", () => {
-  wishBox.classList.remove("show");
+  hideNoteAnimated(wishBox);
   allNotes.find((n) => n.box === wishBox).dismissedManually = true;
 });
 
@@ -106,34 +85,112 @@ dismissAllNotesBtn.addEventListener("click", () => {
   const dismissedCount = allNotes.filter((n) => n.dismissedManually).length;
 
   if (heartPhase === 0) {
-    // Bước 1: tắt hết những note ĐANG hiển thị
-    allNotes.forEach((n) => n.box.classList.remove("show"));
+    allNotes.forEach((n) => hideNoteAnimated(n.box));
     heartPhase = 1;
   } else if (heartPhase === 1) {
-    // Bước 2: hiện lại đúng những note chưa từng bị tắt thủ công
     allNotes.forEach((n) => {
-      if (!n.dismissedManually) n.box.classList.add("show");
+      if (!n.dismissedManually) showNoteAnimated(n.box);
     });
-    // Nếu không có note nào bị tắt tay -> vừa hiện là đã đủ full rồi,
-    // quay thẳng về bước 0 (tạo thành chu kỳ 2 bước như case đơn giản)
     heartPhase = dismissedCount > 0 ? 2 : 0;
   } else if (heartPhase === 2) {
-    // Bước 3: hiện đầy đủ, kể cả những note đã bị tắt thủ công
-    allNotes.forEach((n) => n.box.classList.add("show"));
+    allNotes.forEach((n) => showNoteAnimated(n.box));
     heartPhase = 3;
   } else if (heartPhase === 3) {
-    // Bước 4: tắt hết + reset toàn bộ cờ "đã tắt thủ công"
     allNotes.forEach((n) => {
-      n.box.classList.remove("show");
+      hideNoteAnimated(n.box);
       n.dismissedManually = false;
     });
     heartPhase = 4;
   } else if (heartPhase === 4) {
-    // Bước 5: hiện đầy đủ (giờ là trạng thái gốc vì cờ đã reset hết)
-    allNotes.forEach((n) => n.box.classList.add("show"));
-    heartPhase = 0; // quay về gốc, sẵn sàng cho chu kỳ tiếp theo
+    allNotes.forEach((n) => showNoteAnimated(n.box));
+    heartPhase = 0;
   }
 });
+
+const NOTE_ARC_HEIGHT = 160;
+const NOTE_ARC_DURATION = 650;
+
+function getHeartCenter() {
+  const rect = dismissAllNotesBtn.getBoundingClientRect();
+  return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+}
+
+// Lấy mẫu 14 điểm trên đường cong parabol từ (x0,y0) -> (x1,y1), cao "height"
+function arcPoints(x0, y0, x1, y1, height, steps = 14) {
+  const pts = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const x = x0 + (x1 - x0) * t;
+    const y = y0 + (y1 - y0) * t - height * Math.sin(Math.PI * t);
+    pts.push({ x, y });
+  }
+  return pts;
+}
+
+function showNoteAnimated(el) {
+  if (el.classList.contains("show")) return;
+
+  el.getAnimations().forEach((a) => a.cancel());
+  el.classList.add("show");
+  el.style.transition = "none";
+  void el.offsetHeight; // ép trình duyệt "chốt" ngay vị trí/góc nghiêng cuối cùng
+
+  const rect = el.getBoundingClientRect();
+  const finalX = rect.left + rect.width / 2;
+  const finalY = rect.top + rect.height / 2;
+  const heart = getHeartCenter();
+
+  const pts = arcPoints(
+    heart.x - finalX,
+    heart.y - finalY,
+    0,
+    0,
+    NOTE_ARC_HEIGHT,
+  );
+  const keyframes = pts.map((p, i) => ({
+    transform: `translate(${p.x}px, ${p.y}px) scale(${0.25 + 0.75 * (i / pts.length)})`,
+    opacity: i === 0 ? 0 : 1,
+  }));
+
+  const anim = el.animate(keyframes, {
+    duration: NOTE_ARC_DURATION,
+    easing: "linear",
+    fill: "forwards",
+  });
+
+  anim.onfinish = () => {
+    el.style.transition = "";
+    anim.cancel(); // trả quyền lại cho CSS -> note đứng đúng góc nghiêng/vị trí gốc
+  };
+}
+
+function hideNoteAnimated(el) {
+  if (!el.classList.contains("show")) return;
+
+  el.getAnimations().forEach((a) => a.cancel());
+
+  const rect = el.getBoundingClientRect();
+  const curX = rect.left + rect.width / 2;
+  const curY = rect.top + rect.height / 2;
+  const heart = getHeartCenter();
+
+  const pts = arcPoints(0, 0, heart.x - curX, heart.y - curY, NOTE_ARC_HEIGHT);
+  const keyframes = pts.map((p, i) => ({
+    transform: `translate(${p.x}px, ${p.y}px) scale(${1 - 0.75 * (i / pts.length)})`,
+    opacity: i === pts.length ? 0 : 1,
+  }));
+
+  const anim = el.animate(keyframes, {
+    duration: NOTE_ARC_DURATION,
+    easing: "linear",
+    fill: "forwards",
+  });
+
+  anim.onfinish = () => {
+    el.classList.remove("show");
+    anim.cancel();
+  };
+}
 
 const bgMusic = document.getElementById("bgMusic");
 
