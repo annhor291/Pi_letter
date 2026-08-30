@@ -39,12 +39,28 @@ setTimeout(() => {
   trickBox.classList.add("show");
 }, 950); // chen giữa thời điểm TIP (600ms) và REMINDER (850ms) một chút để không dồn cục
 
+const promiseBox = document.getElementById("promiseBox");
+const promiseDismiss = document.getElementById("promiseDismiss");
+
+setTimeout(() => {
+  promiseBox.classList.add("show");
+}, 1600);
+
+const wishBox = document.getElementById("wishBox");
+const wishDismiss = document.getElementById("wishDismiss");
+
+setTimeout(() => {
+  wishBox.classList.add("show");
+}, 1250);
+
 const allNotes = [
   { box: tipBox, dismissedManually: false },
   { box: factBox, dismissedManually: false },
   { box: reminderBox, dismissedManually: false },
   { box: memoryBox, dismissedManually: false },
   { box: trickBox, dismissedManually: false },
+  { box: promiseBox, dismissedManually: false }, // thêm
+  { box: wishBox, dismissedManually: false }, // thêm
 ];
 
 // Đánh dấu "đã tắt thủ công" khi bấm đúng nút Bỏ qua/bít ời của từng note
@@ -71,6 +87,16 @@ memoryDismiss.addEventListener("click", () => {
 trickDismiss.addEventListener("click", () => {
   trickBox.classList.remove("show");
   allNotes.find((n) => n.box === trickBox).dismissedManually = true;
+});
+
+promiseDismiss.addEventListener("click", () => {
+  promiseBox.classList.remove("show");
+  allNotes.find((n) => n.box === promiseBox).dismissedManually = true;
+});
+
+wishDismiss.addEventListener("click", () => {
+  wishBox.classList.remove("show");
+  allNotes.find((n) => n.box === wishBox).dismissedManually = true;
 });
 
 // Nút tim — chu kỳ 5
@@ -796,12 +822,33 @@ function goToReadingPage() {
 
   closeBtn.addEventListener("click", () => {
     clearRain(rainInterval);
+
+    // Lớp phủ trắng-hồng, hiện sẵn (đang che toàn màn hình) rồi tan dần
+    const flyOverlay = document.createElement("div");
+    flyOverlay.className = "scene-overlay show";
+    flyOverlay.style.transition = "none";
+    document.body.appendChild(flyOverlay);
+    void flyOverlay.offsetHeight; // ép trình duyệt "chốt" trạng thái show trước khi gỡ transition:none
+    flyOverlay.style.transition = "";
+
+    // Lá thư bay ngược trở lại (dùng animation-direction: reverse ở CSS)
+    const flyingLetter = document.createElement("div");
+    flyingLetter.className = "letter-flyback";
+    flyingLetter.innerHTML = '<div class="letter-content">Gửi Piii</div>';
+    document.body.appendChild(flyingLetter);
+
     readingPage.classList.remove("show");
+
+    requestAnimationFrame(() => {
+      flyOverlay.classList.remove("show"); // bắt đầu tan lớp phủ, đồng bộ với lúc thư thu nhỏ
+    });
 
     setTimeout(() => {
       readingPage.remove();
+      flyOverlay.remove();
+      flyingLetter.remove();
       goToClosingPage();
-    }, 500);
+    }, 1100); // khớp đúng 1.1s của animation
   });
 
   layout();

@@ -1336,7 +1336,7 @@ body {
 .memory-box {
   position: fixed;
   bottom: 20px;
-  right: 60px;
+  right: 70px;
   max-width: 260px;
   background: #fffdf8;
   border: 3px solid #2b2b2b;
@@ -1640,71 +1640,127 @@ body {
 }
 
 @keyframes letterLaunchArc {
-  /* ===== GIAI ĐOẠN 1: bay cao rồi hạ xuống thấp — scale giữ nguyên 1 tuyệt đối ===== */
+  /* ===== GIAI ĐOẠN BAY (0% - 50%) — quỹ đạo vòng cung thật, scale tăng mượt 1 -> 2 ===== */
   0% {
     transform: translateY(50px) scale(1);
     opacity: 1;
-    animation-timing-function: ease-out;
   }
-  8% {
-    transform: translateY(-60px) scale(1);
-    opacity: 1;
-    animation-timing-function: ease-in-out;
+  2.5% {
+    transform: translateY(0px) scale(1.05);
   }
-  16% {
-    transform: translateY(-160px) scale(1);
-    opacity: 1;
-    animation-timing-function: ease-in-out;
+  5% {
+    transform: translateY(-49px) scale(1.1);
   }
-  24% {
-    transform: translateY(-235px) scale(1);
-    opacity: 1;
-    animation-timing-function: ease-in-out;
+  7.5% {
+    transform: translateY(-95px) scale(1.15);
   }
-  32% {
-    /* đỉnh cung — cao nhất */
-    transform: translateY(-260px) scale(1);
-    opacity: 1;
-    animation-timing-function: ease-in;
+  10% {
+    transform: translateY(-138px) scale(1.2);
+  }
+  12.5% {
+    transform: translateY(-175px) scale(1.25);
+  }
+  15% {
+    transform: translateY(-207px) scale(1.3);
+  }
+  17.5% {
+    transform: translateY(-232px) scale(1.35);
+  }
+  20% {
+    transform: translateY(-249px) scale(1.4);
+  }
+  22.5% {
+    transform: translateY(-259px) scale(1.45);
+  }
+  25% {
+    /* đỉnh cung */
+    transform: translateY(-260px) scale(1.5);
+  }
+  27.5% {
+    transform: translateY(-253px) scale(1.55);
+  }
+  30% {
+    transform: translateY(-237px) scale(1.6);
+  }
+  32.5% {
+    transform: translateY(-214px) scale(1.65);
+  }
+  35% {
+    transform: translateY(-183px) scale(1.7);
+  }
+  37.5% {
+    transform: translateY(-145px) scale(1.75);
   }
   40% {
-    transform: translateY(-210px) scale(1);
-    opacity: 1;
-    animation-timing-function: ease-in;
+    transform: translateY(-102px) scale(1.8);
   }
-  48% {
-    /* hạ xuống thấp, thấp hơn cả điểm xuất phát ban đầu */
-    transform: translateY(90px) scale(1);
-    opacity: 1;
-    animation-timing-function: ease-out;
+  42.5% {
+    transform: translateY(-53px) scale(1.85);
   }
-  55% {
-    /* chạm đáy, dừng hẳn tại đây -> kết thúc giai đoạn bay */
-    transform: translateY(110px) scale(1);
+  45% {
+    transform: translateY(-1px) scale(1.9);
+  }
+  47.5% {
+    transform: translateY(54px) scale(1.95);
+  }
+  50% {
+    /* hạ cánh -> dừng bay, kích thước đã gấp đôi ban đầu */
+    transform: translateY(110px) scale(2);
     opacity: 1;
-    animation-timing-function: ease-in;
   }
 
-  /* ===== GIAI ĐOẠN 2: đứng yên tuyệt đối, chỉ phình to áp sát mặt người xem ===== */
-  65% {
-    transform: translateY(110px) scale(1.7);
+  /* ===== GIAI ĐOẠN PHÓNG TO (50% - 100%) — đứng yên vị trí, chỉ tăng scale dồn dập dần ===== */
+  50.3% {
+    transform: translateY(110px) scale(2.5);
     opacity: 1;
-    animation-timing-function: ease-in;
   }
-  75% {
-    transform: translateY(110px) scale(2.9);
-    opacity: 0.9;
-    animation-timing-function: ease-in;
+  51% {
+    transform: translateY(110px) scale(3);
+    opacity: 1;
   }
-  85% {
-    transform: translateY(110px) scale(4.6);
-    opacity: 0.55;
-    animation-timing-function: ease-in;
+  52.3% {
+    transform: translateY(110px) scale(3.5);
+    opacity: 1;
   }
-  93% {
+  54.1% {
+    transform: translateY(110px) scale(4);
+    opacity: 1;
+  }
+  56.4% {
+    transform: translateY(110px) scale(4.5);
+    opacity: 1;
+  }
+  59.2% {
+    transform: translateY(110px) scale(5);
+    opacity: 1;
+  }
+  62.5% {
+    transform: translateY(110px) scale(5.5);
+    opacity: 0.95;
+  }
+  66.3% {
+    transform: translateY(110px) scale(6);
+    opacity: 0.85;
+  }
+  70.7% {
     transform: translateY(110px) scale(6.5);
+    opacity: 0.7;
+  }
+  75.5% {
+    transform: translateY(110px) scale(7);
+    opacity: 0.55;
+  }
+  80.9% {
+    transform: translateY(110px) scale(7.5);
+    opacity: 0.4;
+  }
+  86.7% {
+    transform: translateY(110px) scale(8);
     opacity: 0.25;
-    animation-timing-function: ease-in;
+  }
+  93.1% {
+    transform: translateY(110px) scale(8.5);
+    opacity: 0.12;
   }
   100% {
     transform: translateY(110px) scale(9);
@@ -1729,4 +1785,88 @@ body {
 
 .scene-overlay.show {
   opacity: 1;
+}
+
+.letter-flyback {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  margin-left: -130px; /* căn giữa ngang, dùng margin thay vì transform vì transform đã bị animation chiếm dụng */
+  width: 260px;
+  height: 180px;
+  background: #fffdf8;
+  border: 2px solid #2b2b2b;
+  border-radius: 8px;
+  box-shadow: 0 14px 32px rgba(190, 40, 110, 0.35);
+  z-index: 40;
+  pointer-events: none;
+  animation: letterLaunchArc 1.1s linear reverse forwards;
+}
+
+/* ========= PROMISE ========= */
+
+.promise-box {
+  position: fixed;
+  bottom: 25px;
+  right: 450px; /* = 60px (right của memory) + 260px (max-width memory) + 30px đệm */
+  max-width: 240px;
+  background: #fffdf8;
+  border: 3px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 16px 18px 46px;
+  font-family: "Itim", cursive;
+  color: #333;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: rotate(-3deg) translateY(20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.promise-box.show {
+  opacity: 1;
+  transform: rotate(-5deg) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.promise-text {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* ========= WISH ========= */
+
+.wish-box {
+  position: fixed;
+  top: 325px;
+  left: 65px;
+  max-width: 260px;
+  background: #fffdf8;
+  border: 3px solid #2b2b2b;
+  border-radius: 12px;
+  padding: 16px 18px 46px;
+  font-family: "Itim", cursive;
+  color: #333;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: rotate(2.5deg) translateY(-20px) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.wish-box.show {
+  opacity: 1;
+  transform: rotate(5deg) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.wish-text {
+  font-size: 15px;
+  line-height: 1.55;
 }
