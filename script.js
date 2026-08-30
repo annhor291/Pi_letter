@@ -772,8 +772,10 @@ function goToReadingPage() {
         typedIndices.add(idx);
         if (el._typeInterval) clearInterval(el._typeInterval);
         el.dataset.typingDone = "false";
+        hint.textContent = "đợi xí nhaaaaa"; // thêm dòng này
         typeText(el, letterPages[idx], 28, () => {
           el.dataset.typingDone = "true";
+          hint.textContent = "Chạm vào thư để đọc tiếp →"; // thêm dòng này
         });
       }
     });
@@ -823,38 +825,35 @@ function goToReadingPage() {
   closeBtn.addEventListener("click", () => {
     clearRain(rainInterval);
 
-    // Lớp phủ trắng-hồng, hiện sẵn (đang che toàn màn hình) rồi tan dần
-    const flyOverlay = document.createElement("div");
-    flyOverlay.className = "scene-overlay show";
-    flyOverlay.style.transition = "none";
-    document.body.appendChild(flyOverlay);
-    void flyOverlay.offsetHeight; // ép trình duyệt "chốt" trạng thái show trước khi gỡ transition:none
-    flyOverlay.style.transition = "";
+    const zoomOverlay = document.createElement("div");
+    zoomOverlay.className = "scene-overlay";
+    document.body.appendChild(zoomOverlay);
 
-    // Lá thư bay ngược trở lại (dùng animation-direction: reverse ở CSS)
-    const flyingLetter = document.createElement("div");
-    flyingLetter.className = "letter-flyback";
-    flyingLetter.innerHTML = '<div class="letter-content">Gửi Piii</div>';
-    document.body.appendChild(flyingLetter);
+    const zoomLetter = document.createElement("div");
+    zoomLetter.className = "letter-zoomout";
+    zoomLetter.innerHTML = '<div class="letter-content">Gửi Piii</div>';
+    document.body.appendChild(zoomLetter);
 
     readingPage.classList.remove("show");
 
     requestAnimationFrame(() => {
-      flyOverlay.classList.remove("show"); // bắt đầu tan lớp phủ, đồng bộ với lúc thư thu nhỏ
+      zoomOverlay.classList.add("show");
     });
+
+    const PHASE_A_DURATION = 600;
 
     setTimeout(() => {
       readingPage.remove();
-      flyOverlay.remove();
-      flyingLetter.remove();
-      goToClosingPage();
-    }, 1100); // khớp đúng 1.1s của animation
+      zoomOverlay.remove(); // cắt cứng, không fade ra
+      zoomLetter.remove();
+      goToClosingPage({ skipInitialLetter: true });
+    }, PHASE_A_DURATION);
   });
 
   layout();
 }
 
-function goToClosingPage() {
+function goToClosingPage({ skipInitialLetter = false } = {}) {
   const closingContainer = document.createElement("div");
   closingContainer.className = "envelope-container";
 
@@ -921,63 +920,94 @@ function goToClosingPage() {
     "#closingLetterContent",
   );
   const closingLetterEl = closingContainer.querySelector(".letter");
+  if (skipInitialLetter) {
+    closingLetterEl.classList.add("pre-flyback"); // ẩn tạm thư thật
+  }
   const closingSceneOverlay = closingContainer.querySelector(
     "#closingSceneOverlay",
   ); // thêm dòng này
 
-  // Giai đoạn 1: cho người xem thấy phong bì đang mở 1 nhịp, rồi bắt đầu rút thư xuống
-  setTimeout(() => {
-    envelope.classList.remove("open");
-    envelope.classList.add("closing-letter");
-  }, 700);
+  function attachClosingHandlers(idleTextTimeout) {
+    closingHeart.addEventListener("click", () => {
+      clearTimeout(idleTextTimeout);
+      closingLetterEl.classList.remove("pre-flyback", "landing-fade"); // thêm dòng này — dọn sạch trạng thái cũ
+      envelope.classList.add("open");
+      closingText.textContent = "Bấm vào lá thư để đọc...💌";
+      closingLetterContent.textContent = "Gửi Piii";
+    });
 
-  // Giai đoạn 2: thư đã rút xong -> gập nắp lại
-  setTimeout(() => {
-    envelope.classList.remove("closing-letter");
-    envelope.classList.add("closing-flap");
-  }, 700 + 650);
+    const closingLetterWindowEl =
+      closingContainer.querySelector(".letter-window");
 
-  // Xong xuôi: đổi chữ báo đã đóng, mở khoá tim để có thể bấm mở lại (loop)
-  setTimeout(
-    () => {
-      envelope.classList.remove("closing-flap");
-      closingText.textContent = "Thư đã được cất giữ an toàn 💌";
+    closingLetterEl.addEventListener("click", () => {
+      if (!envelope.classList.contains("open")) return;
+      if (closingLetterEl.classList.contains("letter-launching")) return;
 
-      closingHeart.classList.remove("no-action");
+      clearInterval(rainInterval);
 
-      const idleTextTimeout = setTimeout(() => {
-        closingText.textContent = "Bấm vào trái tim để mở thư 💌";
-      }, 1500);
+      closingLetterWindowEl.classList.add("window-launching");
+      closingContainer.classList.add("container-launching");
+      closingLetterEl.classList.add("letter-launching");
+      closingSceneOverlay.classList.add("show");
 
-      closingHeart.addEventListener("click", () => {
-        clearTimeout(idleTextTimeout);
-        envelope.classList.add("open");
-        closingText.textContent = "Bấm vào lá thư để đọc...💌";
-        closingLetterContent.textContent = "Gửi Piii";
-      });
+      setTimeout(() => {
+        closingContainer.remove();
+        goToReadingPage();
+      }, 1100);
+    });
+  }
 
-      const closingLetterWindowEl =
-        closingContainer.querySelector(".letter-window"); // thêm dòng này
+  if (skipInitialLetter) {
+    // Hiện phong bì NGAY LẬP TỨC, không qua fade riêng nào nữa
+    closingContainer.style.transition = "none";
+    closingContainer.classList.add("show");
+    void closingContainer.offsetHeight;
+    closingContainer.style.transition = "";
 
-      closingLetterEl.addEventListener("click", () => {
-        if (!envelope.classList.contains("open")) return;
-        if (closingLetterEl.classList.contains("letter-launching")) return;
+    const PHASE_B_DURATION = 550;
+    const CROSSFADE_DURATION = 220;
 
-        clearInterval(rainInterval);
+    const flyingLetterIn = document.createElement("div");
+    flyingLetterIn.className = "letter-flyback-in";
+    flyingLetterIn.innerHTML = '<div class="letter-content">Gửi Piii</div>';
+    document.body.appendChild(flyingLetterIn);
 
-        closingLetterWindowEl.classList.add("window-launching");
-        closingContainer.classList.add("container-launching");
-        closingLetterEl.classList.add("letter-launching");
-        closingSceneOverlay.classList.add("show"); // thêm dòng này
+    // Đúng lúc còn 220ms cuối hành trình -> bắt đầu crossfade 2 chiều
+    setTimeout(() => {
+      closingLetterEl.classList.add("landing-fade");
+      closingLetterEl.classList.remove("pre-flyback"); // 0 -> 1
+      flyingLetterIn.classList.add("arriving"); // 1 -> 0
+    }, PHASE_B_DURATION - CROSSFADE_DURATION);
+
+    setTimeout(() => {
+      flyingLetterIn.remove();
+      envelope.classList.add("open");
+
+      setTimeout(() => {
+        envelope.classList.remove("open");
+        envelope.classList.add("closing-letter");
 
         setTimeout(() => {
-          closingContainer.remove();
-          goToReadingPage();
-        }, 1100); // khớp thời lượng animation mới, xem phần dưới
-      });
-    },
-    700 + 650 + 650,
-  );
+          envelope.classList.remove("closing-letter");
+          envelope.classList.add("closing-flap");
+
+          setTimeout(() => {
+            envelope.classList.remove("closing-flap");
+            closingText.textContent = "Thư đã được cất giữ an toàn 💌";
+            closingHeart.classList.remove("no-action");
+
+            const idleTextTimeout = setTimeout(() => {
+              closingText.textContent = "Bấm vào trái tim để mở thư 💌";
+            }, 1500);
+
+            attachClosingHandlers(idleTextTimeout);
+          }, 650);
+        }, 650);
+      }, 700);
+    }, PHASE_B_DURATION);
+  } else {
+    // ...giữ nguyên y hệt nhánh else cũ...
+  }
   const closingExitBtn = closingContainer.querySelector("#closingExitBtn");
   closingExitBtn.addEventListener("click", () => {
     location.reload();

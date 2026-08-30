@@ -588,10 +588,10 @@ body {
   position: relative;
   z-index: 1; /* nằm trên lớp chữ rơi */
   width: 360px;
-  height: 230px;
+  height: 237px;
   background: #ed5d9c;
-  border: 2px solid #2b2b2b; /* thêm viền đen */
-  border-radius: 0; /* trước: 10px -> bỏ bo góc */
+  border: 5px solid #2b2b2b; /* thêm viền đen */
+  border-radius: 10px; /* trước: 10px -> bỏ bo góc */
   box-shadow: 0 20px 40px rgba(190, 70, 120, 0.25);
   perspective: 1000px;
   overflow: visible;
@@ -674,7 +674,7 @@ body {
   top: 0;
   height: 180px;
   background: #fffdf8;
-  border: 2px solid #2b2b2b; /* viền đen mỏng cho lá thư nổi bật hơn */
+  border: 3px solid #2b2b2b; /* viền đen mỏng cho lá thư nổi bật hơn */
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
   transform: translateY(330px);
@@ -715,7 +715,8 @@ body {
   height: 145px;
   background: #e15390;
   clip-path: polygon(0 20%, 50% 0, 100% 20%, 100% 100%, 0 100%);
-  border-radius: 0; /* trước: 0 0 10px 10px -> bỏ bo góc */
+  border: 1px solid #2b2b2b; /* thêm viền đen */
+  border-radius: 0 0 4px 4px; /* trước: 0 0 10px 10px -> bỏ bo góc */
   z-index: 3;
 }
 
@@ -808,7 +809,7 @@ body {
   position: absolute;
   inset: 0;
   background: #fffdf8;
-  border: 2px solid #2b2b2b; /* viền đen kiểu giấy note */
+  border: 3px solid #2b2b2b; /* viền đen kiểu giấy note */
   border-radius: 12px; /* bo góc ít lại cho giống note thật */
   box-shadow: 0 15px 35px rgba(180, 70, 120, 0.25);
   padding: 35px 30px;
@@ -1379,7 +1380,7 @@ body {
 .memory-caption {
   font-size: 15px;
   font-weight: 600;
-  color: #c2185b;
+  color: #333; /* #c2185b; -  màu hồng đỏ*/
 }
 
 .music-player {
@@ -1768,23 +1769,31 @@ body {
   }
 }
 
+.letter.pre-flyback {
+  opacity: 0; /* ẩn tạm lá thư thật trong .envelope, chờ flyingLetter bay tới thay thế */
+}
+
 /* ========= LỚP PHỦ MỜ DẦN — trắng pha hồng thay vì tối ========= */
 .scene-overlay {
   position: fixed;
   inset: 0;
   background: radial-gradient(
     circle at center,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 182, 213, 0.85)
+    rgba(255, 255, 255, 0.97),
+    rgba(255, 150, 195, 0.95)
   );
+  backdrop-filter: blur(0px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1.1s cubic-bezier(0.55, 0, 1, 0.45);
+  transition:
+    opacity 1.1s cubic-bezier(0.55, 0, 1, 0.45),
+    backdrop-filter 1.1s cubic-bezier(0.55, 0, 1, 0.45);
   z-index: 30;
 }
 
 .scene-overlay.show {
   opacity: 1;
+  backdrop-filter: blur(20px);
 }
 
 .letter-flyback {
@@ -1869,4 +1878,128 @@ body {
 .wish-text {
   font-size: 15px;
   line-height: 1.55;
+}
+
+/* ========= GIAI ĐOẠN A: phóng to + mờ dần, ở trang đọc thư ========= */
+.letter-zoomout {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -130px;
+  margin-top: -90px;
+  width: 260px;
+  height: 180px;
+  background: #fffdf8;
+  border: 2px solid #2b2b2b;
+  border-radius: 8px;
+  box-shadow: 0 14px 32px rgba(190, 40, 110, 0.35);
+  z-index: 40;
+  pointer-events: none;
+  animation: closeZoomFade 600ms ease-in forwards;
+}
+
+@keyframes closeZoomFade {
+  0% {
+    transform: scale(6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* ========= GIAI ĐOẠN B: bay theo cung, thu nhỏ dần vào bao thư ========= */
+.letter-flyback-in {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  margin-left: -130px;
+  width: 260px;
+  height: 180px;
+  background: #fffdf8;
+  border: 2px solid #2b2b2b;
+  border-radius: 8px;
+  box-shadow: 0 14px 32px rgba(190, 40, 110, 0.35);
+  z-index: 40;
+  pointer-events: none;
+  animation: closeArcFlight 550ms linear reverse forwards;
+}
+
+@keyframes closeArcFlight {
+  0% {
+    transform: translateY(50px) scale(1);
+  }
+  5% {
+    transform: translateY(0px) scale(1.05);
+  }
+  10% {
+    transform: translateY(-49px) scale(1.1);
+  }
+  15% {
+    transform: translateY(-95px) scale(1.15);
+  }
+  20% {
+    transform: translateY(-138px) scale(1.2);
+  }
+  25% {
+    transform: translateY(-175px) scale(1.25);
+  }
+  30% {
+    transform: translateY(-207px) scale(1.3);
+  }
+  35% {
+    transform: translateY(-232px) scale(1.35);
+  }
+  40% {
+    transform: translateY(-249px) scale(1.4);
+  }
+  45% {
+    transform: translateY(-259px) scale(1.45);
+  }
+  50% {
+    transform: translateY(-260px) scale(1.5);
+  }
+  55% {
+    transform: translateY(-253px) scale(1.55);
+  }
+  60% {
+    transform: translateY(-237px) scale(1.6);
+  }
+  65% {
+    transform: translateY(-214px) scale(1.65);
+  }
+  70% {
+    transform: translateY(-183px) scale(1.7);
+  }
+  75% {
+    transform: translateY(-145px) scale(1.75);
+  }
+  80% {
+    transform: translateY(-102px) scale(1.8);
+  }
+  85% {
+    transform: translateY(-53px) scale(1.85);
+  }
+  90% {
+    transform: translateY(-1px) scale(1.9);
+  }
+  95% {
+    transform: translateY(54px) scale(1.95);
+  }
+  100% {
+    transform: translateY(110px) scale(2);
+  }
+}
+
+/* dùng animation-direction: reverse -> bắt đầu ở scale2 (to, xa), kết thúc ở scale1 (đúng vị trí "trồi lên 1 phần") */
+
+/* ========= CROSSFADE — 220ms cuối của giai đoạn B ========= */
+.letter-flyback-in.arriving {
+  transition: opacity 220ms ease;
+  opacity: 0;
+}
+
+.letter.landing-fade {
+  transition: opacity 220ms ease;
 }
