@@ -11,20 +11,12 @@ setTimeout(() => {
   tipBox.classList.add("show");
 }, 600);
 
-tipDismiss.addEventListener("click", () => {
-  tipBox.classList.remove("show");
-});
-
 const factBox = document.getElementById("factBox");
 const factDismiss = document.getElementById("factDismiss");
 
 setTimeout(() => {
   factBox.classList.add("show");
 }, 1100);
-
-factDismiss.addEventListener("click", () => {
-  factBox.classList.remove("show");
-});
 
 const reminderBox = document.getElementById("reminderBox");
 const reminderClose = document.getElementById("reminderClose");
@@ -33,10 +25,6 @@ setTimeout(() => {
   reminderBox.classList.add("show");
 }, 850);
 
-reminderClose.addEventListener("click", () => {
-  reminderBox.classList.remove("show");
-});
-
 const memoryBox = document.getElementById("memoryBox");
 const memoryDismiss = document.getElementById("memoryDismiss");
 
@@ -44,8 +32,81 @@ setTimeout(() => {
   memoryBox.classList.add("show");
 }, 1350);
 
+const trickBox = document.getElementById("trickBox");
+const trickDismiss = document.getElementById("trickDismiss");
+
+setTimeout(() => {
+  trickBox.classList.add("show");
+}, 950); // chen giữa thời điểm TIP (600ms) và REMINDER (850ms) một chút để không dồn cục
+
+const allNotes = [
+  { box: tipBox, dismissedManually: false },
+  { box: factBox, dismissedManually: false },
+  { box: reminderBox, dismissedManually: false },
+  { box: memoryBox, dismissedManually: false },
+  { box: trickBox, dismissedManually: false },
+];
+
+// Đánh dấu "đã tắt thủ công" khi bấm đúng nút Bỏ qua/bít ời của từng note
+tipDismiss.addEventListener("click", () => {
+  tipBox.classList.remove("show");
+  allNotes.find((n) => n.box === tipBox).dismissedManually = true;
+});
+
+factDismiss.addEventListener("click", () => {
+  factBox.classList.remove("show");
+  allNotes.find((n) => n.box === factBox).dismissedManually = true;
+});
+
+reminderClose.addEventListener("click", () => {
+  reminderBox.classList.remove("show");
+  allNotes.find((n) => n.box === reminderBox).dismissedManually = true;
+});
+
 memoryDismiss.addEventListener("click", () => {
   memoryBox.classList.remove("show");
+  allNotes.find((n) => n.box === memoryBox).dismissedManually = true;
+});
+
+trickDismiss.addEventListener("click", () => {
+  trickBox.classList.remove("show");
+  allNotes.find((n) => n.box === trickBox).dismissedManually = true;
+});
+
+// Nút tim — chu kỳ 5
+let heartPhase = 0; // 0 -> 1 -> 2 -> 3 -> 4 -> 0 (hoặc rút gọn 1 -> 0 nếu không có note nào bị tắt tay)
+
+dismissAllNotesBtn.addEventListener("click", () => {
+  const dismissedCount = allNotes.filter((n) => n.dismissedManually).length;
+
+  if (heartPhase === 0) {
+    // Bước 1: tắt hết những note ĐANG hiển thị
+    allNotes.forEach((n) => n.box.classList.remove("show"));
+    heartPhase = 1;
+  } else if (heartPhase === 1) {
+    // Bước 2: hiện lại đúng những note chưa từng bị tắt thủ công
+    allNotes.forEach((n) => {
+      if (!n.dismissedManually) n.box.classList.add("show");
+    });
+    // Nếu không có note nào bị tắt tay -> vừa hiện là đã đủ full rồi,
+    // quay thẳng về bước 0 (tạo thành chu kỳ 2 bước như case đơn giản)
+    heartPhase = dismissedCount > 0 ? 2 : 0;
+  } else if (heartPhase === 2) {
+    // Bước 3: hiện đầy đủ, kể cả những note đã bị tắt thủ công
+    allNotes.forEach((n) => n.box.classList.add("show"));
+    heartPhase = 3;
+  } else if (heartPhase === 3) {
+    // Bước 4: tắt hết + reset toàn bộ cờ "đã tắt thủ công"
+    allNotes.forEach((n) => {
+      n.box.classList.remove("show");
+      n.dismissedManually = false;
+    });
+    heartPhase = 4;
+  } else if (heartPhase === 4) {
+    // Bước 5: hiện đầy đủ (giờ là trạng thái gốc vì cờ đã reset hết)
+    allNotes.forEach((n) => n.box.classList.add("show"));
+    heartPhase = 0; // quay về gốc, sẵn sàng cho chu kỳ tiếp theo
+  }
 });
 
 const bgMusic = document.getElementById("bgMusic");
@@ -135,6 +196,11 @@ const songs = [
   { name: "Bài hát 5", src: "assets/music5.mp3" },
   { name: "Bài hát 6", src: "assets/music6.mp3" },
   { name: "Bài hát 7", src: "assets/music7.mp3" },
+  { name: "Bài hát 8", src: "assets/music8.mp3" },
+  { name: "Bài hát 9", src: "assets/music9.mp3" },
+  { name: "Bài hát 10", src: "assets/music10.mp3" },
+  { name: "Bài hát 11", src: "assets/music11.mp3" },
+  { name: "Bài hát 12", src: "assets/music12.mp3" },
 ];
 
 const songDropdownBtn = document.getElementById("songDropdownBtn");
@@ -316,6 +382,7 @@ function checkPassword() {
     card.classList.add("hide");
 
     setTimeout(() => {
+      document.querySelector(".password-page").style.display = "none"; // thêm dòng này
       showEnvelope();
     }, 150);
   } else {
@@ -386,7 +453,7 @@ function startBackgroundRain(container) {
       el.className = "floating-sticker";
       el.src =
         stickerSources[Math.floor(Math.random() * stickerSources.length)];
-      const size = 40 + Math.random() * 30;
+      const size = 70 + Math.random() * 50;
       el.style.width = size + "px";
       el.style.height = size + "px";
     } else {
@@ -789,6 +856,7 @@ function goToClosingPage() {
 
     <p class="envelope-text" id="closingText">Đang cất thư vào phong bì...💌</p>
     <button class="exit-btn" id="closingExitBtn">thoát raaaaaa</button>
+    <div class="scene-overlay" id="closingSceneOverlay"></div>
   `;
 
   document.body.appendChild(closingContainer);
@@ -806,6 +874,9 @@ function goToClosingPage() {
     "#closingLetterContent",
   );
   const closingLetterEl = closingContainer.querySelector(".letter");
+  const closingSceneOverlay = closingContainer.querySelector(
+    "#closingSceneOverlay",
+  ); // thêm dòng này
 
   // Giai đoạn 1: cho người xem thấy phong bì đang mở 1 nhịp, rồi bắt đầu rút thư xuống
   setTimeout(() => {
@@ -832,22 +903,30 @@ function goToClosingPage() {
       }, 1500);
 
       closingHeart.addEventListener("click", () => {
-        clearTimeout(idleTextTimeout); // tránh bị ghi đè chữ nếu bấm trước khi hết 2.5s
+        clearTimeout(idleTextTimeout);
         envelope.classList.add("open");
         closingText.textContent = "Bấm vào lá thư để đọc...💌";
         closingLetterContent.textContent = "Gửi Piii";
       });
 
+      const closingLetterWindowEl =
+        closingContainer.querySelector(".letter-window"); // thêm dòng này
+
       closingLetterEl.addEventListener("click", () => {
         if (!envelope.classList.contains("open")) return;
+        if (closingLetterEl.classList.contains("letter-launching")) return;
 
-        clearRain(rainInterval); // trước: clearInterval(rainInterval)
-        closingContainer.classList.remove("show");
+        clearInterval(rainInterval);
+
+        closingLetterWindowEl.classList.add("window-launching");
+        closingContainer.classList.add("container-launching");
+        closingLetterEl.classList.add("letter-launching");
+        closingSceneOverlay.classList.add("show"); // thêm dòng này
 
         setTimeout(() => {
           closingContainer.remove();
           goToReadingPage();
-        }, 500);
+        }, 1100); // khớp thời lượng animation mới, xem phần dưới
       });
     },
     700 + 650 + 650,
@@ -911,6 +990,7 @@ function showEnvelope() {
       Bấm vào trái tim để mở thư 💌
     </p>
     <button class="exit-btn" id="exitBtn">thoát raaaaaa</button>
+    <div class="scene-overlay" id="sceneOverlay"></div>
   `;
 
   document.body.appendChild(envelopeContainer);
@@ -938,16 +1018,24 @@ function showEnvelope() {
   });
 
   const letterEl = envelopeContainer.querySelector(".letter");
+  const letterWindowEl = envelopeContainer.querySelector(".letter-window"); // thêm dòng này
+  const sceneOverlay = envelopeContainer.querySelector("#sceneOverlay"); // thêm dòng này
+
   letterEl.addEventListener("click", () => {
     if (!envelope.classList.contains("open")) return;
+    if (letterEl.classList.contains("letter-launching")) return;
 
-    clearRain(rainInterval); // trước: clearInterval(rainInterval)
-    envelopeContainer.classList.remove("show");
+    clearRain(rainInterval);
+
+    letterWindowEl.classList.add("window-launching");
+    envelopeContainer.classList.add("container-launching");
+    letterEl.classList.add("letter-launching");
+    sceneOverlay.classList.add("show"); // thêm dòng này
 
     setTimeout(() => {
       envelopeContainer.remove();
       goToReadingPage();
-    }, 500);
+    }, 1100);
   });
 
   const exitBtn = envelopeContainer.querySelector("#exitBtn");
