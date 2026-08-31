@@ -18,209 +18,211 @@
 
   <body>
     <main class="password-page">
-      <div class="tip-box" id="tipBox">
-        <div class="tip-title">TIP</div>
+        <div class="tip-box" id="tipBox">
+          <div class="tip-title">TIP</div>
+          <ul class="tip-list">
+            <li>Click vào nút play ở dưới ảnh để phát nhạc.</li>
+            <li>Click vào nút tam giác để chọn nhạc nhạc.</li>
+            <li>Mật khẩu là mã PIN mà An đã cung cấp.</li>
+            <li>Bấm đúng mật khẩu để đăng nhập.</li>
+            <li class="tip-warning">
+              ĐẶC BIỆT LƯU Ý: Cẩn thận coi chừng có người sau lưng đọc lén
+              :)))))))))
+            </li>
+          </ul>
 
-        <ul class="tip-list">
-          <li>Click vào nút play ở dưới ảnh để phát nhạc.</li>
-          <li>Click vào nút tam giác để chọn nhạc nhạc.</li>
-          <li>Mật khẩu là mã PIN mà An đã cung cấp.</li>
-          <li>Bấm đúng mật khẩu để đăng nhập.</li>
-          <li class="tip-warning">
-            ĐẶC BIỆT LƯU Ý: Cẩn thận coi chừng có người sau lưng đọc lén
-            :)))))))))
-          </li>
-        </ul>
-
-        <button class="tip-dismiss" id="tipDismiss">Bỏ qua</button>
-      </div>
-      <div class="fact-box" id="factBox">
-        <div class="tip-title">FACT</div>
-        <p class="fact-text">
-          Do ngành IT đã làm An khô khan, hướng nội như bây giờ nên An không
-          biết phải nói những điều này trực tiếp với Phượng thế nào, vậy nên An
-          làm cái web này để chuyển lời giúp An.
-        </p>
-        <button class="tip-dismiss" id="factDismiss">Bỏ qua</button>
-      </div>
-
-      <div class="reminder-box" id="reminderBox">
-        <div class="reminder-title">REMINDER</div>
-        <p class="reminder-text">
-          Nếu Pi có quên bấm phát nhạc thì cũng đừng lo vì An đã tích hợp tự
-          động phát nhạc khi mở thư luôn rồi. Còn nếu Pi có cho dừng nhạc thì
-          nút trái tim cũng sẽ phát tiếp he he, phải có nhạc mới hay chớ.
-        </p>
-        <button class="tip-dismiss" id="reminderClose">Bỏ qua</button>
-      </div>
-
-      <div class="memory-box" id="memoryBox">
-        <div class="tip-title">MEMORY</div>
-        <div class="memory-photo-wrap">
-          <img src="assets/nho&pi1.jpg" alt="Kỷ niệm" class="memory-photo" />
+          <button class="tip-dismiss" id="tipDismiss">Bỏ qua</button>
         </div>
-        <p class="memory-caption">Lần đầu bị sét đánh mà không ngỏm ⚡️⚡️</p>
-        <button class="tip-dismiss" id="memoryDismiss">bít ròi</button>
-      </div>
+        <div class="fact-box" id="factBox">
+          <div class="tip-title">FACT</div>
+          <p class="fact-text">
+            Do ngành IT đã làm An khô khan, hướng nội như bây giờ nên An không
+            biết phải nói những điều này trực tiếp với Phượng thế nào, vậy nên
+            An làm cái web này để chuyển lời giúp An.
+          </p>
+          <button class="tip-dismiss" id="factDismiss">Bỏ qua</button>
+        </div>
 
-      <div class="promise-box" id="promiseBox">
-        <div class="tip-title">PROMISE</div>
-        <p class="promise-text">Có gì cần giúp cứ ới An nhaa</p>
-        <button class="tip-dismiss" id="promiseDismiss">Bỏ qua</button>
-      </div>
+        <div class="reminder-box" id="reminderBox">
+          <div class="reminder-title">REMINDER</div>
+          <p class="reminder-text">
+            Nếu Pi có quên bấm phát nhạc thì cũng đừng lo vì An đã tích hợp tự
+            động phát nhạc khi mở thư luôn rồi. Còn nếu Pi có cho dừng nhạc thì
+            nút trái tim cũng sẽ phát tiếp he he, phải có nhạc mới hay chớ.
+          </p>
+          <button class="tip-dismiss" id="reminderClose">Bỏ qua</button>
+        </div>
 
-      <div class="wish-box" id="wishBox">
-        <div class="tip-title">WISH</div>
-        <p class="wish-text">À nhân tiện thì nghỉ lễ vui vẻ nhó</p>
-        <button class="tip-dismiss" id="wishDismiss">Bỏ qua</button>
-      </div>
+        <div class="memory-box" id="memoryBox">
+          <div class="tip-title">MEMORY</div>
+          <div class="memory-photo-wrap">
+            <img src="assets/nho&pi1.jpg" alt="Kỷ niệm" class="memory-photo" />
+          </div>
+          <p class="memory-caption">Lần đầu bị sét đánh mà không ngỏm ⚡️⚡️</p>
+          <button class="tip-dismiss" id="memoryDismiss">bít ròi</button>
+        </div>
 
-      <div class="trick-box" id="trickBox">
-        <div class="tip-title">TRICK</div>
-        <p class="trick-text">Trái tim nhấp nháy để đỡ "phìn"</p>
-        <button class="tip-dismiss" id="trickDismiss">Bỏ qua</button>
-      </div>
+        <div class="promise-box" id="promiseBox">
+          <div class="tip-title">PROMISE</div>
+          <p class="promise-text">Có gì cần giúp cứ ới An nhaa</p>
+          <button class="tip-dismiss" id="promiseDismiss">Bỏ qua</button>
+        </div>
 
-      <div class="password-card">
-        <!-- =========================
+        <div class="wish-box" id="wishBox">
+          <div class="tip-title">WISH</div>
+          <p class="wish-text">À nhân tiện thì nghỉ lễ vui vẻ nhó</p>
+          <button class="tip-dismiss" id="wishDismiss">Bỏ qua</button>
+        </div>
+
+        <div class="trick-box" id="trickBox">
+          <div class="tip-title">TRICK</div>
+          <p class="trick-text">Trái tim nhấp nháy để giúp đỡ "phìn", web sẽ thường xuyên được update</p>
+          <button class="tip-dismiss" id="trickDismiss">Bỏ qua</button>
+        </div>
+
+        <div class="password-card">
+          <!-- =========================
                  ẢNH BÊN TRÁI
                  ========================= -->
 
-        <div class="photo-section">
-          <img src="assets/crush.jpg" alt="Một kỷ niệm" />
+          <div class="photo-section">
+            <img src="assets/crush.jpg" alt="Một kỷ niệm" />
 
-          <div class="music-player">
-            <audio id="bgMusic" src="assets/music1.mp3"></audio>
+            <div class="music-player">
+              <audio id="bgMusic" src="assets/music1.mp3"></audio>
 
-            <div class="player-progress">
-              <input
-                type="range"
-                id="progressBar"
-                class="progress-range"
-                min="0"
-                max="100"
-                value="0"
-              />
-              <span class="progress-heart">♥</span>
-            </div>
+              <div class="player-progress">
+                <input
+                  type="range"
+                  id="progressBar"
+                  class="progress-range"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+                <span class="progress-heart">♥</span>
+              </div>
 
-            <div class="player-controls">
+              <div class="player-controls">
+                <button
+                  class="player-btn"
+                  id="rewindBtn"
+                  aria-label="Tua lại 10 giây"
+                >
+                  <span class="rewind-icon">
+                    <span></span>
+                    <span></span>
+                  </span>
+                </button>
+
+                <button
+                  class="player-btn play-btn"
+                  id="playPauseBtn"
+                  aria-label="Phát / Tạm dừng"
+                >
+                  <span class="play-icon"></span>
+                  <span class="pause-icon"></span>
+                </button>
+
+                <button
+                  class="player-btn"
+                  id="forwardBtn"
+                  aria-label="Tua tới 10 giây"
+                >
+                  <span class="forward-icon">
+                    <span></span>
+                    <span></span>
+                  </span>
+                </button>
+              </div>
               <button
-                class="player-btn"
-                id="rewindBtn"
-                aria-label="Tua lại 10 giây"
+                class="song-dropdown-btn"
+                id="songDropdownBtn"
+                aria-label="Chọn bài hát"
               >
-                <span class="rewind-icon">
-                  <span></span>
-                  <span></span>
-                </span>
+                <span class="dropdown-arrow"></span>
               </button>
-
-              <button
-                class="player-btn play-btn"
-                id="playPauseBtn"
-                aria-label="Phát / Tạm dừng"
-              >
-                <span class="play-icon"></span>
-                <span class="pause-icon"></span>
-              </button>
-
-              <button
-                class="player-btn"
-                id="forwardBtn"
-                aria-label="Tua tới 10 giây"
-              >
-                <span class="forward-icon">
-                  <span></span>
-                  <span></span>
-                </span>
-              </button>
-            </div>
-            <button
-              class="song-dropdown-btn"
-              id="songDropdownBtn"
-              aria-label="Chọn bài hát"
-            >
-              <span class="dropdown-arrow"></span>
-            </button>
-            <div class="song-list" id="songList">
-              <div class="song-items" id="songItems"></div>
-              <div class="song-scrollbar" id="songScrollbar">
-                <div class="song-scrollbar-thumb" id="songScrollbarThumb"></div>
+              <div class="song-list" id="songList">
+                <div class="song-items" id="songItems"></div>
+                <div class="song-scrollbar" id="songScrollbar">
+                  <div
+                    class="song-scrollbar-thumb"
+                    id="songScrollbarThumb"
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- =========================
+          <!-- =========================
                  KHU VỰC NHẬP MẬT KHẨU
                  ========================= -->
 
-        <div class="password-section">
-          <!-- Icon trái tim -->
+          <div class="password-section">
+            <!-- Icon trái tim -->
 
-          <button
-            class="heart-icon"
-            id="dismissAllNotesBtn"
-            aria-label="Tắt hết ghi chú"
-          >
-            ♥
-          </button>
-
-          <!-- Tiêu đề -->
-
-          <h1>Nhập mật khẩu</h1>
-
-          <!-- 6 dấu chấm -->
-
-          <div class="password-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-
-          <!-- Bàn phím -->
-
-          <div class="keypad">
-            <button class="key" data-number="1">1</button>
-            <button class="key" data-number="2">2</button>
-            <button class="key" data-number="3">3</button>
-
-            <button class="key" data-number="4">4</button>
-            <button class="key" data-number="5">5</button>
-            <button class="key" data-number="6">6</button>
-
-            <button class="key" data-number="7">7</button>
-            <button class="key" data-number="8">8</button>
-            <button class="key" data-number="9">9</button>
-
-            <div></div>
-
-            <button class="key" data-number="0">0</button>
-
-            <button class="delete-button" id="deleteButton" aria-label="Xóa">
-              <span class="delete-icon">
-                <svg viewBox="0 0 100 60" class="delete-key-svg">
-                  <path
-                    d="M 26,0 L 92,0 Q 100,0 100,8 L 100,52 Q 100,60 92,60 L 26,60 Q 18,60 13.89,53.14 L 3.08,35.14 Q 0,30 3.08,24.86 L 13.89,6.86 Q 18,0 26,0 Z"
-                    fill="rgba(255, 255, 255, 0.75)"
-                  />
-                </svg>
-                <span class="delete-cross"></span>
-              </span>
+            <button
+              class="heart-icon"
+              id="dismissAllNotesBtn"
+              aria-label="Tắt hết ghi chú"
+            >
+              ♥
             </button>
+
+            <!-- Tiêu đề -->
+
+            <h1>Nhập mật khẩu</h1>
+
+            <!-- 6 dấu chấm -->
+
+            <div class="password-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <!-- Bàn phím -->
+
+            <div class="keypad">
+              <button class="key" data-number="1">1</button>
+              <button class="key" data-number="2">2</button>
+              <button class="key" data-number="3">3</button>
+
+              <button class="key" data-number="4">4</button>
+              <button class="key" data-number="5">5</button>
+              <button class="key" data-number="6">6</button>
+
+              <button class="key" data-number="7">7</button>
+              <button class="key" data-number="8">8</button>
+              <button class="key" data-number="9">9</button>
+
+              <div></div>
+
+              <button class="key" data-number="0">0</button>
+
+              <button class="delete-button" id="deleteButton" aria-label="Xóa">
+                <span class="delete-icon">
+                  <svg viewBox="0 0 100 60" class="delete-key-svg">
+                    <path
+                      d="M 26,0 L 92,0 Q 100,0 100,8 L 100,52 Q 100,60 92,60 L 26,60 Q 18,60 13.89,53.14 L 3.08,35.14 Q 0,30 3.08,24.86 L 13.89,6.86 Q 18,0 26,0 Z"
+                      fill="rgba(255, 255, 255, 0.75)"
+                    />
+                  </svg>
+                  <span class="delete-cross"></span>
+                </span>
+              </button>
+            </div>
+
+            <!-- Thông báo lỗi -->
+
+            <p id="errorMessage" class="error-message">
+              Mật khẩu không đúng ròi 💔
+            </p>
           </div>
-
-          <!-- Thông báo lỗi -->
-
-          <p id="errorMessage" class="error-message">
-            Mật khẩu không đúng ròi 💔
-          </p>
         </div>
-      </div>
     </main>
 
     <script src="script.js"></script>

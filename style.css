@@ -35,12 +35,9 @@ body {
 .password-page {
   width: 100%;
   min-height: 100vh;
-
   display: flex;
-
   justify-content: center;
   align-items: center;
-
   padding: 20px;
 }
 
@@ -312,6 +309,7 @@ body {
 
 .password-section h1 {
   margin-bottom: 25px;
+  font-family: "Itim", cursive;
 
   color: white;
 
@@ -1573,8 +1571,8 @@ body {
 .trick-box {
   position: fixed;
   top: 30px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-20px) scale(0.9);
+  left: 700px;
+  translate: -50% 0; /* thay cho translateX(-50%) trong transform — độc lập, JS không đụng tới */
   width: min(360px, 80vw);
   background: #fffdf8;
   border: 3px solid #2b2b2b;
@@ -1583,6 +1581,7 @@ body {
   font-family: "Itim", cursive;
   color: #333;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  transform: translateY(-20px) scale(0.9); /* bỏ translateX(-50%) khỏi đây */
   opacity: 0;
   pointer-events: none;
   transition:
@@ -1593,7 +1592,7 @@ body {
 
 .trick-box.show {
   opacity: 1;
-  transform: translateX(-50%) rotate(1.5deg) translateY(0) scale(1);
+  transform: rotate(1.5deg) translateY(0) scale(1); /* bỏ translateX(-50%) khỏi đây */
   pointer-events: auto;
 }
 

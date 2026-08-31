@@ -2,7 +2,7 @@ const keys = document.querySelectorAll(".key");
 const dots = document.querySelectorAll(".password-dots span");
 const deleteButton = document.getElementById("deleteButton");
 const errorMessage = document.getElementById("errorMessage");
-const correctPassword = "290103";
+const correctPassword = "270603";
 
 const tipBox = document.getElementById("tipBox");
 const tipDismiss = document.getElementById("tipDismiss");
@@ -495,10 +495,14 @@ function checkPassword() {
   Nội dung thư, chia nhỏ theo từng "trang" trong chồng thư.
 */
 const letterPages = [
-  "Gửi em,\n\nAnh không giỏi nói những lời hoa mỹ, nhưng có vài điều anh muốn nói với em...",
-  "Có những buổi chiều anh chỉ ước có em ở bên, cùng nhau đi dạo và trò chuyện về những điều nhỏ nhặt nhất.",
-  "Cảm ơn em vì đã xuất hiện, vì đã là em của hiện tại và cả sau này.",
-  "Mong rằng chặng đường phía trước, mình sẽ luôn có nhau. 🤍",
+  "Gửi Phượng.\nTrước tiên thì sau khoảng gần 3 năm tính từ lần đầu tiên gặp Phượng, lần đầu gặp là mê luôn mà, dính bùa yêu từ lần đầu nhìn thấy luôn á nghe hơi bốc phét nhưng mà thật đó. Rồi may sao được chung nhóm nữa chứ trời ơi quá đãaa.",
+  "Nên trong lòng An chất chứa nhiều thứ lắm nhưng mà không biết phải thổ lộ như thế nào. Nên An dành hết tâm huyết, dồn hết tâm tư vào cái web này với hy vọng Phượng sẽ thích nó hoặc ít nhất thì nó sẽ làm Phượng vui hơn. Và giúp An nói bày tỏ lòng mình nữa.",
+  "Thú thật thì An cũng biết bây giờ Phượng vẫn chưa muốn có người yêu hay chưa nghĩ tới chuyện yêu đương vì mọi thứ hiện tại chưa ổn định. Có lẽ Phượng đang ưu tiên phát triển công việc, ưu tiên dành thời gian cho bạn bè và gia đình hơn. Hoặc có lẽ đơn giản là không phải An. An cũng hiểu sau vài lần thổ lộ và biết có thổ lộ thêm bao nhiêu lần nữa thì kết quả cũng như vậy",
+  "An biết mà. Dù chưa nghe Phượng trả lời nhưng An cũng cũng biết Phượng muốn nói gì rồi. Mà cũng khó ha, vừa khó để nói thẳng ra mà cũng vừa khó chịu khi phải im lặng. Đúng hong có khó chịu hong??? Mà An thì cũng không muốn Phượng phải khó xử, cũng không muốn tụi mình phải cứ né nhau hoài nên là thôi An cũng nói hết cho Phượng biết luôn. Mà tính ra chắc có mỗi Phượng né chứ An có né đâu.",
+  "An như vậy là do thích Phượng lắm, mê cực kì luôn á. Mà cứ sợ nói xong lại được rồi lại cũng không thể nói chuyện như bạn bè nữa, mà không nói thì lại cứ lấn cấn trong lòng á nên mấy lúc không kìm được là lại thổ lộ luôn à. Mà An cũng thấy cứ tiếp tục như vậy thì cũng hoài thì không phải là cách và tốt nhất là An nên ngừng mấy cái đó lại, không cố chấp nữa.",
+  "An nghĩ một phần cũng do An chưa đủ chủ động ,chưa đủ nhiệt tình, chưa theo đuổi Phượng một cách rõ ràng. Bây giờ chưa phải thời điểm và An cũng chưa phải là mẫu người để Phượng có thể thích vì hiện tại An cũng dùng hết bài vở mà An có rồi mà thấy cũng không xi nhê gì hết \n:(((((((",
+  "Nhưng mà An cũng không bỏ chạy đâu nhe, An lì đòn chịu đau dữ lắm, dính bùa mê nữa thì càng lì :)))) Nhưng cũng sẽ không thổ lộ thêm nữa. Ít nhất là cho đến khi mọi thứ ổn định hơn với cả hai đứa, khi mà An đã hoàn thiện bản thân mình hơn hiện tại. Lúc đó An sẽ trở lại để tiếp tục tìm kiếm thêm cơ hội, theo đuổi Phượng một cách rõ ràng với nhiều chiêu mạnh hơn. Để coi lúc đó còn cứng nổi không nhóooo.",
+  'Hy vọng đọc xong Phượng sẽ hiểu được những gì trong lòng An dành cho Phượng. Móa nó sến vô cùng tận :)))) Nhưng mà phải nhớ là : "Lúc nào cũng phải thật hạnh phúc nha mom" 🤍',
 ];
 
 /*
