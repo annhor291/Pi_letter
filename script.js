@@ -530,7 +530,7 @@ const letterPages = [
 
   "Nên trong lòng An chất chứa nhiều thứ lắm nhưng mà không biết phải thổ lộ như thế nào. Nên An dành hết tâm huyết, dồn hết tâm tư vào cái web này với hy vọng Phượng sẽ thích nó hoặc ít nhất thì nó sẽ làm Phượng vui hơn. Và giúp An nói bày tỏ lòng mình nữa.",
 
-  "Thú thật thì An cũng biết bây giờ Phượng vẫn chưa muốn có người yêu hay chưa nghĩ tới chuyện yêu đương vì mọi thứ hiện tại chưa ổn định. Có lẽ Phượng đang ưu tiên phát triển công việc, ưu tiên dành thời gian cho bạn bè và gia đình hơn. Hoặc có lẽ đơn giản là không phải An. An cũng hiểu sau vài lần thổ lộ và biết có thổ lộ thêm bao nhiêu lần nữa thì kết quả cũng như vậy",
+  "Thú thật thì An cũng biết bây giờ Phượng vẫn chưa muốn có người yêu hay chưa nghĩ tới chuyện yêu đương vì mọi thứ hiện tại chưa ổn định. Có lẽ Phượng đang ưu tiên phát triển công việc, ưu tiên dành thời gian cho bạn bè và gia đình hơn. Hoặc có lẽ đơn giản là không phải An. An cũng hiểu sau vài lần thổ lộ và biết có thổ lộ thêm bao nhiêu lần nữa thì kết quả cũng như vậy.",
 
   "An biết mà. Dù chưa nghe Phượng trả lời nhưng An cũng cũng biết Phượng muốn nói gì rồi. Mà cũng khó ha, vừa khó để nói thẳng ra mà cũng vừa khó chịu khi phải im lặng. Đúng hong có khó chịu hong??? Mà An thì cũng không muốn Phượng phải khó xử, cũng không muốn tụi mình phải cứ né nhau hoài nên là thôi An cũng nói hết cho Phượng biết luôn. Mà tính ra chắc có mỗi Phượng né chứ An có né đâu.",
 
