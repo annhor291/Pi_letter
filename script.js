@@ -775,7 +775,6 @@ function typeText(el, text, speed = 65, onComplete) {
   return id;
 }
 
-
 /*
   ✨ Xử lý một ký tự
 */
@@ -798,7 +797,6 @@ function playMagicCharacter(charEl) {
   }, 260);
 }
 
-
 /*
   🔥 TẠO TÀN LỬA
 */
@@ -809,10 +807,7 @@ function createEmbers(charEl) {
     Nếu ký tự đã biến mất khỏi màn hình
     thì không tạo particle.
   */
-  if (
-    rect.width === 0 ||
-    rect.height === 0
-  ) {
+  if (rect.width === 0 || rect.height === 0) {
     return;
   }
 
@@ -827,14 +822,9 @@ function createEmbers(charEl) {
     /*
       Bắt đầu ngay quanh ký tự
     */
-    const startX =
-      rect.left +
-      rect.width / 2 +
-      (Math.random() - 0.5) * 5;
+    const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 5;
 
-    const startY =
-      rect.top +
-      rect.height * 0.45;
+    const startY = rect.top + rect.height * 0.45;
 
     ember.style.left = `${startX}px`;
     ember.style.top = `${startY}px`;
@@ -843,24 +833,15 @@ function createEmbers(charEl) {
       Hướng bay ngẫu nhiên:
       chủ yếu bay lên, hơi lệch trái/phải.
     */
-    const moveX =
-      (Math.random() - 0.5) * 20;
+    const moveX = (Math.random() - 0.5) * 20;
 
-    const moveY =
-      -(7 + Math.random() * 22);
+    const moveY = -(7 + Math.random() * 22);
 
-    ember.style.setProperty(
-      "--ember-x",
-      `${moveX}px`
-    );
+    ember.style.setProperty("--ember-x", `${moveX}px`);
 
-    ember.style.setProperty(
-      "--ember-y",
-      `${moveY}px`
-    );
+    ember.style.setProperty("--ember-y", `${moveY}px`);
 
-    const size =
-      1.5 + Math.random() * 2.5;
+    const size = 1.5 + Math.random() * 2.5;
 
     ember.style.width = `${size}px`;
     ember.style.height = `${size}px`;
@@ -875,7 +856,7 @@ function createEmbers(charEl) {
       () => {
         ember.remove();
       },
-      { once: true }
+      { once: true },
     );
   }
 }
@@ -1185,6 +1166,7 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
   const closingLetterContent = closingContainer.querySelector(
     "#closingLetterContent",
   );
+  closingLetterContent.textContent = "Gửi Piii";
   const closingLetterEl = closingContainer.querySelector(".letter");
   if (skipInitialLetter) {
     closingLetterEl.classList.add("pre-flyback"); // ẩn tạm thư thật
@@ -1199,7 +1181,7 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
       closingLetterEl.classList.remove("pre-flyback", "landing-fade"); // thêm dòng này — dọn sạch trạng thái cũ
       envelope.classList.add("open");
       closingText.textContent = "Bấm vào lá thư để đọc...💌";
-      closingLetterContent.textContent = "Gửi Piii";
+      /*closingLetterContent.textContent = "Gửi Piii";*/
     });
 
     const closingLetterWindowEl =
@@ -1276,8 +1258,24 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
     // ...giữ nguyên y hệt nhánh else cũ...
   }
   const closingExitBtn = closingContainer.querySelector("#closingExitBtn");
+
   closingExitBtn.addEventListener("click", () => {
-    location.reload();
+    clearInterval(rainInterval);
+    closingContainer.remove();
+
+    // Quay lại trang nhập PIN
+    const passwordPage = document.querySelector(".password-page");
+    const passwordCard = document.querySelector(".password-card");
+
+    passwordPage.style.display = "";
+    passwordCard.classList.remove("hide");
+
+    // Reset ô PIN
+    password = "";
+    updateDots();
+
+    // Xóa thông báo lỗi nếu có
+    errorMessage.classList.remove("show");
   });
 }
 

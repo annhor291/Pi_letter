@@ -861,7 +861,7 @@ body {
 
 /* ========= CÁC LỚP THƯ PHÍA SAU — lệch góc + xoay để trông như 1 chồng giấy thật ========= */
 .stack-card.behind-1 {
-  transform: translate(11x, 9px) rotate(-3deg);
+  transform: translate(11px, 9px) rotate(-3deg);
   pointer-events: none;
 }
 
