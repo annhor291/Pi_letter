@@ -256,7 +256,7 @@ progressBar.addEventListener("input", () => {
   updateProgressFill(); // thêm dòng này để kéo tay cũng cập nhật màu ngay lập tức
 });
 
-rewindBtn.addEventListener("click", () => {
+/*rewindBtn.addEventListener("click", () => {
   bgMusic.currentTime = Math.max(0, bgMusic.currentTime - 10);
 });
 
@@ -265,6 +265,37 @@ forwardBtn.addEventListener("click", () => {
     bgMusic.duration || 0,
     bgMusic.currentTime + 10,
   );
+});*/
+
+rewindBtn.addEventListener("click", () => {
+  const currentIndex = songs.findIndex((s) => bgMusic.src.endsWith(s.src));
+
+  const prevIndex = currentIndex <= 0 ? songs.length - 1 : currentIndex - 1;
+
+  bgMusic.src = songs[prevIndex].src;
+  bgMusic.currentTime = 0;
+  hasSelectedSong = true;
+
+  bgMusic.play().catch((err) => {
+    console.warn("Không thể phát bài trước:", err);
+  });
+});
+
+forwardBtn.addEventListener("click", () => {
+  const currentIndex = songs.findIndex((s) => bgMusic.src.endsWith(s.src));
+
+  const nextIndex =
+    currentIndex === -1 || currentIndex >= songs.length - 1
+      ? 0
+      : currentIndex + 1;
+
+  bgMusic.src = songs[nextIndex].src;
+  bgMusic.currentTime = 0;
+  hasSelectedSong = true;
+
+  bgMusic.play().catch((err) => {
+    console.warn("Không thể phát bài tiếp theo:", err);
+  });
 });
 
 /*
@@ -496,12 +527,19 @@ function checkPassword() {
 */
 const letterPages = [
   "Gửi Phượng.\nTrước tiên thì sau khoảng gần 3 năm tính từ lần đầu tiên gặp Phượng, lần đầu gặp là mê luôn mà, dính bùa yêu từ lần đầu nhìn thấy luôn á nghe hơi bốc phét nhưng mà thật đó. Rồi may sao được chung nhóm nữa chứ trời ơi quá đãaa.",
+
   "Nên trong lòng An chất chứa nhiều thứ lắm nhưng mà không biết phải thổ lộ như thế nào. Nên An dành hết tâm huyết, dồn hết tâm tư vào cái web này với hy vọng Phượng sẽ thích nó hoặc ít nhất thì nó sẽ làm Phượng vui hơn. Và giúp An nói bày tỏ lòng mình nữa.",
+
   "Thú thật thì An cũng biết bây giờ Phượng vẫn chưa muốn có người yêu hay chưa nghĩ tới chuyện yêu đương vì mọi thứ hiện tại chưa ổn định. Có lẽ Phượng đang ưu tiên phát triển công việc, ưu tiên dành thời gian cho bạn bè và gia đình hơn. Hoặc có lẽ đơn giản là không phải An. An cũng hiểu sau vài lần thổ lộ và biết có thổ lộ thêm bao nhiêu lần nữa thì kết quả cũng như vậy",
+
   "An biết mà. Dù chưa nghe Phượng trả lời nhưng An cũng cũng biết Phượng muốn nói gì rồi. Mà cũng khó ha, vừa khó để nói thẳng ra mà cũng vừa khó chịu khi phải im lặng. Đúng hong có khó chịu hong??? Mà An thì cũng không muốn Phượng phải khó xử, cũng không muốn tụi mình phải cứ né nhau hoài nên là thôi An cũng nói hết cho Phượng biết luôn. Mà tính ra chắc có mỗi Phượng né chứ An có né đâu.",
+
   "An như vậy là do thích Phượng lắm, mê cực kì luôn á. Mà cứ sợ nói xong lại được rồi lại cũng không thể nói chuyện như bạn bè nữa, mà không nói thì lại cứ lấn cấn trong lòng á nên mấy lúc không kìm được là lại thổ lộ luôn à. Mà An cũng thấy cứ tiếp tục như vậy thì cũng hoài thì không phải là cách và tốt nhất là An nên ngừng mấy cái đó lại, không cố chấp nữa.",
+
   "An nghĩ một phần cũng do An chưa đủ chủ động ,chưa đủ nhiệt tình, chưa theo đuổi Phượng một cách rõ ràng. Bây giờ chưa phải thời điểm và An cũng chưa phải là mẫu người để Phượng có thể thích vì hiện tại An cũng dùng hết bài vở mà An có rồi mà thấy cũng không xi nhê gì hết \n:(((((((",
+
   "Nhưng mà An cũng không bỏ chạy đâu nhe, An lì đòn chịu đau dữ lắm, dính bùa mê nữa thì càng lì :)))) Nhưng cũng sẽ không thổ lộ thêm nữa. Ít nhất là cho đến khi mọi thứ ổn định hơn với cả hai đứa, khi mà An đã hoàn thiện bản thân mình hơn hiện tại. Lúc đó An sẽ trở lại để tiếp tục tìm kiếm thêm cơ hội, theo đuổi Phượng một cách rõ ràng với nhiều chiêu mạnh hơn. Để coi lúc đó còn cứng nổi không nhóooo.",
+
   'Hy vọng đọc xong Phượng sẽ hiểu được những gì trong lòng An dành cho Phượng. Móa nó sến vô cùng tận :)))) Nhưng mà phải nhớ là : "Lúc nào cũng phải thật hạnh phúc nha mom" 🤍',
 ];
 
@@ -802,9 +840,11 @@ function goToReadingPage() {
     return card;
   }
 
+  const STACK_DEPTH = 4; // số lớp tối đa phía sau lá đang đọc
+
   function layout() {
     const visibleIndices = [];
-    for (let offset = 0; offset <= 2; offset++) {
+    for (let offset = 0; offset <= STACK_DEPTH; offset++) {
       const idx = current + offset;
       if (idx < letterPages.length) visibleIndices.push(idx);
     }
@@ -823,9 +863,11 @@ function goToReadingPage() {
         el = createCard(idx);
         cardEls.set(idx, el);
       }
-      el.classList.remove("behind-1", "behind-2");
+      el.classList.remove("behind-1", "behind-2", "behind-3", "behind-4");
       if (offset === 1) el.classList.add("behind-1");
       if (offset === 2) el.classList.add("behind-2");
+      if (offset === 3) el.classList.add("behind-3");
+      if (offset === 4) el.classList.add("behind-4");
 
       // Lá phía sau (offset 1, 2) giữ trang trắng hoàn toàn,
       // chỉ gõ chữ đúng lúc lá đó trở thành lá đang đọc (offset 0)
@@ -928,7 +970,7 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
       d="M 0,0 L 0,26 L 232,126 L 464,26 L 464,0"
       fill="none"
       stroke="#2b2b2b"
-      stroke-width="2"
+      stroke-width="5"
       stroke-linejoin="miter"
     />
   </svg>
@@ -942,7 +984,7 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
       d="M 0,126 L 0,100 L 232,0 L 464,100 L 464,126"
       fill="none"
       stroke="#2b2b2b"
-      stroke-width="2"
+      stroke-width="5"
       stroke-linejoin="miter"
     />
   </svg>
@@ -1042,6 +1084,7 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
 
     setTimeout(() => {
       flyingLetterIn.remove();
+      closingLetterContent.textContent = "Gửi Piii"; // thêm dòng này
       envelope.classList.add("open");
 
       setTimeout(() => {
@@ -1062,9 +1105,9 @@ function goToClosingPage({ skipInitialLetter = false } = {}) {
             }, 1500);
 
             attachClosingHandlers(idleTextTimeout);
-          }, 650);
-        }, 650);
-      }, 700);
+          }, 550); // trước: 650
+        }, 500); // trước: 650
+      }, 250); // trước: 700 -> giảm mạnh, chỉ đủ để mắt "chấp nhận" thư đã tới rồi rút liền
     }, PHASE_B_DURATION);
   } else {
     // ...giữ nguyên y hệt nhánh else cũ...
@@ -1089,7 +1132,7 @@ function showEnvelope() {
       d="M 0,0 L 0,26 L 232,126 L 464,26 L 464,0"
       fill="none"
       stroke="#2b2b2b"
-      stroke-width="2"
+      stroke-width="5"
       stroke-linejoin="miter"
     />
   </svg>
@@ -1103,7 +1146,7 @@ function showEnvelope() {
       d="M 0,126 L 0,100 L 232,0 L 464,100 L 464,126"
       fill="none"
       stroke="#2b2b2b"
-      stroke-width="2"
+      stroke-width="5"
       stroke-linejoin="miter"
     />
   </svg>
@@ -1177,7 +1220,23 @@ function showEnvelope() {
   });
 
   const exitBtn = envelopeContainer.querySelector("#exitBtn");
+
   exitBtn.addEventListener("click", () => {
-    location.reload();
+    clearRain(rainInterval);
+    envelopeContainer.remove();
+
+    // Quay lại trang nhập PIN
+    const passwordPage = document.querySelector(".password-page");
+    const passwordCard = document.querySelector(".password-card");
+
+    passwordPage.style.display = "";
+    passwordCard.classList.remove("hide");
+
+    // Reset ô PIN
+    password = "";
+    updateDots();
+
+    // Xóa thông báo lỗi nếu có
+    errorMessage.classList.remove("show");
   });
 }
