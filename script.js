@@ -698,7 +698,7 @@ function startPhotoRain(container, sources) {
   Hiệu ứng gõ chữ nhảy ra từng ký tự.
   Dùng Array.from để tách đúng từng ký tự tiếng Việt có dấu.
 */
-function typeText(el, text, speed = 28, onComplete) {
+/*function typeText(el, text, speed = 28, onComplete) {
   el.textContent = "";
   const chars = Array.from(text);
   let i = 0;
@@ -715,8 +715,170 @@ function typeText(el, text, speed = 28, onComplete) {
 
   el._typeInterval = id;
   return id;
+}*/
+
+/*
+  ✨ MAGIC TYPING
+  Đỏ đô → đỏ nhạt → cam đỏ → đen
+  + tàn lửa sau mỗi ký tự
+*/
+function typeText(el, text, speed = 65, onComplete) {
+  el.innerHTML = "";
+
+  const chars = Array.from(text);
+  const charElements = [];
+
+  /*
+    QUAN TRỌNG:
+    - Ký tự bình thường → span riêng để animate
+    - Space / newline → text node bình thường
+
+    Nhờ vậy trình duyệt vẫn wrap text tự nhiên
+    theo chiều rộng của lá thư.
+  */
+  chars.forEach((char) => {
+    if (char === " " || char === "\n") {
+      el.appendChild(document.createTextNode(char));
+      return;
+    }
+
+    const span = document.createElement("span");
+
+    span.className = "magic-char";
+    span.textContent = char;
+
+    el.appendChild(span);
+    charElements.push(span);
+  });
+
+  let i = 0;
+
+  const id = setInterval(() => {
+    if (i >= charElements.length) {
+      clearInterval(id);
+      el._typeInterval = null;
+
+      if (onComplete) {
+        onComplete();
+      }
+
+      return;
+    }
+
+    playMagicCharacter(charElements[i]);
+
+    i++;
+  }, speed);
+
+  el._typeInterval = id;
+
+  return id;
 }
 
+
+/*
+  ✨ Xử lý một ký tự
+*/
+function playMagicCharacter(charEl) {
+  // Reset animation
+  charEl.classList.remove("magic-char-glow");
+
+  // Ép browser reflow để animation chạy lại
+  void charEl.offsetWidth;
+
+  // Bắt đầu phép thuật
+  charEl.classList.add("magic-char-glow");
+
+  /*
+    Chờ chữ gần hoàn tất rồi mới tạo
+    tàn lửa.
+  */
+  setTimeout(() => {
+    createEmbers(charEl);
+  }, 260);
+}
+
+
+/*
+  🔥 TẠO TÀN LỬA
+*/
+function createEmbers(charEl) {
+  const rect = charEl.getBoundingClientRect();
+
+  /*
+    Nếu ký tự đã biến mất khỏi màn hình
+    thì không tạo particle.
+  */
+  if (
+    rect.width === 0 ||
+    rect.height === 0
+  ) {
+    return;
+  }
+
+  // 1–2 hạt là đủ, tránh thành pháo hoa
+  const amount = 1 + Math.floor(Math.random() * 2);
+
+  for (let i = 0; i < amount; i++) {
+    const ember = document.createElement("span");
+
+    ember.className = "magic-ember";
+
+    /*
+      Bắt đầu ngay quanh ký tự
+    */
+    const startX =
+      rect.left +
+      rect.width / 2 +
+      (Math.random() - 0.5) * 5;
+
+    const startY =
+      rect.top +
+      rect.height * 0.45;
+
+    ember.style.left = `${startX}px`;
+    ember.style.top = `${startY}px`;
+
+    /*
+      Hướng bay ngẫu nhiên:
+      chủ yếu bay lên, hơi lệch trái/phải.
+    */
+    const moveX =
+      (Math.random() - 0.5) * 20;
+
+    const moveY =
+      -(7 + Math.random() * 22);
+
+    ember.style.setProperty(
+      "--ember-x",
+      `${moveX}px`
+    );
+
+    ember.style.setProperty(
+      "--ember-y",
+      `${moveY}px`
+    );
+
+    const size =
+      1.5 + Math.random() * 2.5;
+
+    ember.style.width = `${size}px`;
+    ember.style.height = `${size}px`;
+
+    document.body.appendChild(ember);
+
+    /*
+      Tự xóa sau animation
+    */
+    ember.addEventListener(
+      "animationend",
+      () => {
+        ember.remove();
+      },
+      { once: true }
+    );
+  }
+}
 function startHeartRain(container) {
   const rain = document.createElement("div");
   rain.className = "rain-container";
@@ -876,7 +1038,8 @@ function goToReadingPage() {
         if (el._typeInterval) clearInterval(el._typeInterval);
         el.dataset.typingDone = "false";
         hint.textContent = "đợi xí nhaaaaa"; // thêm dòng này
-        typeText(el, letterPages[idx], 28, () => {
+        /*typeText(el, letterPages[idx], 28, () => {*/
+        typeText(el, letterPages[idx], 65, () => {
           el.dataset.typingDone = "true";
           hint.textContent = "Chạm vào thư để đọc tiếp →"; // thêm dòng này
         });
